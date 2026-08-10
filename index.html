@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eternal IMPEX | Premium Ethiopian Agricultural Sourcing & Global Export</title>
+  <meta name="description" content="Ethiopia's premier B2B agricultural exporter. Sourcing export-grade sesame seeds, specialty coffee, pulses, spices, oil seeds, and natural gums directly from verified highlands to international markets.">
+  <meta name="keywords" content="Ethiopia agricultural export, Ethiopian sesame seeds Humera, Yirgacheffe specialty coffee, B2B grain exporter, organic spices Ethiopia, Djibouti port logistics">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Eternal IMPEX | Premium Ethiopian Agricultural Sourcing">
+  <meta property="og:description" content="Bridging Ethiopia's agricultural wealth with global supply chains. Sustainable sourcing, high-tech processing, and certified international logistics.">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D9A441'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+
+  <!-- Fonts & Stylesheet -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  
+
+<script src="app.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Preloader Screen -->
+  <div id="preloader" class="preloader">
+    <div class="preloader-brand">
+      <div class="preloader-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="preloader-brand-name">ETERNAL IMPEX</span>
+    </div>
+    <div class="preloader-bar-container">
+      <div id="preloader-bar" class="preloader-bar"></div>
+    </div>
+    <div id="preloader-status" class="preloader-status">Loading Agricultural Sequence... 0%</div>
+  </div>
+
+  <!-- Sticky Minimal Navigation -->
+<header id="navbar" class="site-header">
+
+    <!-- LOGO -->
+    <a href="#hero" class="site-logo">
+        <img src="logo.svg" alt="Eternal IMPEX">
+    </a>
+
+    <!-- NAVIGATION -->
+    <nav class="site-navigation">
+
+        <ul class="site-nav-list">
+
+            <li>
+                <a href="#hero" class="site-nav-link active">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="#products" class="site-nav-link">
+                    Products
+                </a>
+            </li>
+
+            <li>
+                <a href="#supply-chain" class="site-nav-link">
+                    Supply Chain
+                </a>
+            </li>
+
+            <li>
+                <a href="#quality" class="site-nav-link">
+                    Quality
+                </a>
+            </li>
+
+            <li>
+                <a href="#industries" class="site-nav-link">
+                    Industries
+                </a>
+            </li>
+
+            <li>
+                <a href="#stats" class="site-nav-link">
+                    About
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+    <!-- REQUEST QUOTE -->
+
+</header>
+
+  <!-- Hero Scrollytelling Wrapper (450vh scroll distance for 300 frames) -->
+  <section id="hero" class="hero-scrolly-wrapper">
+    <div id="hero-wrapper" style="width: 100%; height: 100%; position: relative;">
+      <div class="hero-sticky-view">
+        
+        <!-- 300-Frame Image Sequence Canvas -->
+        <canvas id="hero-canvas" class="hero-canvas"></canvas>
+        
+        <!-- Ambient Particles Canvas -->
+        <canvas id="particles-canvas" class="particles-canvas"></canvas>
+        
+        <!-- Vignette Mask -->
+        <div class="hero-overlay-vignette"></div>
+
+        <!-- Storytelling Overlay Cards Layer -->
+        <div class="hero-content-layer">
+          
+          <!-- Stage 1 (0-18%): SEED PLANTING (CENTER) -->
+          <div id="stage-1" class="story-card stage-center active">
+            <div class="stage-badge">01 / ORIGIN & PLANTING</div>
+            <h1 class="story-headline">Every Global Harvest Begins With a Single Planting Season</h1>
+            <p class="story-subheadline">
+              From Ethiopia's fertile highlands, thousands of carefully selected agricultural products begin their journey toward international markets.
+            </p>
+            <div class="seed-pills-grid">
+              <span class="seed-pill"><span class="seed-dot"></span> Humera Sesame</span>
+              <span class="seed-pill"><span class="seed-dot"></span> Red Kidney Beans</span>
+              <span class="seed-pill"><span class="seed-dot"></span> White Beans</span>
+              <span class="seed-pill"><span class="seed-dot"></span> Korarima Cardamom</span>
+              <span class="seed-pill"><span class="seed-dot"></span> Turmeric</span>
+              <span class="seed-pill"><span class="seed-dot"></span> Ginger</span>
+              <span class="seed-pill"><span class="seed-dot"></span> Black Seed (Nigella)</span>
+              <span class="seed-pill"><span class="seed-dot"></span> Chili</span>
+              <span class="seed-pill"><span class="seed-dot"></span> Arabica Coffee</span>
+              <span class="seed-pill"><span class="seed-dot"></span> Maize</span>
+            </div>
+          </div>
+
+          <!-- Stage 2 (20-38%): DISASSEMBLY & QUALITY SOURCING (LEFT ALIGNED) -->
+          <div id="stage-2" class="story-card stage-left">
+            <div class="stage-badge">02 / QUALITY SOURCING & DISASSEMBLY</div>
+            <h2 class="story-headline">Precision-Engineered Sourcing</h2>
+            <p class="story-subheadline">
+              Every shipment begins with verified highland farms, rigorous moisture calibration, and zero-defect harvesting standards from the ground up.
+            </p>
+          </div>
+
+          <!-- Stage 3 (40-62%): GERMINATION & COOPERATIVES (RIGHT ALIGNED) -->
+          <div id="stage-3" class="story-card stage-right">
+            <div class="stage-badge">03 / FARMER COOPERATIVES & AI SORTING</div>
+            <h2 class="story-headline">Micro-Structure & Purity</h2>
+            <p class="story-subheadline">
+              Direct partnerships with 25,000+ certified smallholder farmers. State-of-the-art Buhler Sortex optical sorting ensures 99.5%+ seed purity.
+            </p>
+          </div>
+
+          <!-- Stage 4 (65-83%): GLOBAL EXPORT SCALE (LEFT ALIGNED) -->
+          <div id="stage-4" class="story-card stage-left">
+            <div class="stage-badge">04 / GLOBAL EXPORT LOGISTICS</div>
+            <h2 class="story-headline">Scaling Agriculture Worldwide</h2>
+            <p class="story-subheadline">
+              From sesame and pulses to specialty Arabica coffee, we provide FOB/CIF shipping options with Djibouti port logistics and SGS certification.
+            </p>
+            <div class="feature-highlights-grid">
+              <div class="feature-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>99.5%+ Purity</span>
+              </div>
+              <div class="feature-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Djibouti Port Shipping</span>
+              </div>
+              <div class="feature-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>SGS Inspected</span>
+              </div>
+              <div class="feature-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Organic Certified</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 5 (85-100%): REASSEMBLY & FINAL BRAND REVEAL (CENTER) -->
+          <div id="stage-5" class="story-card stage-center">
+            <div class="stage-badge">ETERNAL IMPEX ETHIOPIA</div>
+            <h2 class="story-headline">BRIDGING ETHIOPIA'S AGRICULTURAL WEALTH WITH GLOBAL SUPPLY CHAINS</h2>
+            <p class="story-subheadline">
+              High-purity agricultural commodities harvested at their peak, processed to international standards, and delivered across 45+ countries.
+            </p>
+            <div class="hero-cta-group">
+              <button class="btn-primary open-quote-drawer">
+                <span>Request a Quote</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <a href="#products" class="btn-secondary">
+                <span>Explore Products</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Hero Scroll Progress Tracker Bar -->
+        <div class="scroll-indicator">
+          <span>Scroll to Explore Journey</span>
+          <div class="scroll-track">
+            <div id="scroll-thumb" class="scroll-thumb"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+    <!-- About Us Scroll Reveal -->
+<section class="about-section" id="about">
+
+    <div class="about-sticky">
+
+        <div class="about-container">
+
+            <div class="about-label">
+                ABOUT US
+            </div>
+
+            <p class="about-text">
+                We combine years of engineering expertise and interactive storytelling to craft immersive digital experiences that feel effortless, cinematic, and unforgettable. Every pixel, animation, and interaction is carefully engineered to transform complex technology into beautiful, intuitive experiences.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+  <!-- FEATURED PRODUCTS SECTION -->
+  <section id="products" class="section section-organic">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Premium Catalog</span>
+        <h2 class="section-title">Export-Grade Ethiopian Commodities</h2>
+        <p class="section-description">
+          Rigorously cleaned, sorted, and certified agricultural products harvested directly from Ethiopia's prime agro-ecological zones.
+        </p>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="product-filters">
+        <button class="filter-btn active" data-filter="all">All Products</button>
+        <button class="filter-btn" data-filter="sesame">Sesame Seeds</button>
+        <button class="filter-btn" data-filter="coffee">Specialty Coffee</button>
+        <button class="filter-btn" data-filter="pulses">Pulses & Beans</button>
+        <button class="filter-btn" data-filter="spices">Spices & Botanical</button>
+      </div>
+
+      <!-- Dynamic Products Grid -->
+      <div id="products-grid" class="products-grid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOBAL SUPPLY CHAIN SECTION -->
+  <section id="supply-chain" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">End-to-End Integrity</span>
+        <h2 class="section-title">Our Verified Supply Chain Workflow</h2>
+        <p class="section-description">
+          Complete transparency and quality control at every stage—from smallholder highland farms to ocean cargo vessels.
+        </p>
+      </div>
+
+      <!-- Stepper Controls -->
+      <div class="supply-stepper">
+        <div class="supply-step-node active" data-step="0">
+          <div class="step-number-circle">1</div>
+          <span class="step-label">Farmer Network</span>
+        </div>
+        <div class="supply-step-node" data-step="1">
+          <div class="step-number-circle">2</div>
+          <span class="step-label">Collection Hubs</span>
+        </div>
+        <div class="supply-step-node" data-step="2">
+          <div class="step-number-circle">3</div>
+          <span class="step-label">High-Tech Processing</span>
+        </div>
+        <div class="supply-step-node" data-step="3">
+          <div class="step-number-circle">4</div>
+          <span class="step-label">Quality Assurance</span>
+        </div>
+        <div class="supply-step-node" data-step="4">
+          <div class="step-number-circle">5</div>
+          <span class="step-label">Port Logistics</span>
+        </div>
+      </div>
+
+      <!-- Interactive Step Info Panel -->
+      <div class="supply-content-panel">
+        <div>
+          <h3 id="supply-title" class="supply-info-title">1. Direct Farmer Co-op Sourcing</h3>
+          <p id="supply-desc" class="supply-info-desc">
+            Partnering directly with over 25,000 verified smallholder farmers across Oromia, Amhara, SNNPR, and Tigray regions.
+          </p>
+          <div id="supply-metrics" class="supply-metrics-list">
+            <!-- Populated dynamically by app.js -->
+          </div>
+        </div>
+
+        <div id="supply-visual" class="supply-visual-box">
+          <!-- Graphic populated dynamically by app.js -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUALITY CERTIFICATIONS SECTION -->
+  <section id="quality" class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Global Compliance</span>
+        <h2 class="section-title">Certified Standards & Rigorous Assurance</h2>
+        <p class="section-description">
+          We comply with international food safety standards and partner with accredited inspection agencies for total peace of mind.
+        </p>
+      </div>
+
+      <div class="certs-grid">
+        <div class="cert-card">
+          <div class="cert-badge-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="cert-name">ISO 22000 Certified</h3>
+          <p class="cert-desc">Food Safety Management System audit compliance for handling and processing export commodities.</p>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-badge-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"/></svg>
+          </div>
+          <h3 class="cert-name">EU & USDA Organic</h3>
+          <p class="cert-desc">Certified organic farming and chemical-free processing options available for international buyers.</p>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-badge-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="cert-name">HACCP Compliant</h3>
+          <p class="cert-desc">Comprehensive hazard analysis and critical control points implemented across all processing centers.</p>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-badge-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3 class="cert-name">SGS Inspection</h3>
+          <p class="cert-desc">Pre-shipment inspection certificates issued by SGS, Cotecna, or Bureau Veritas prior to container loading.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEY STATISTICS SECTION -->
+  <section id="stats" class="section section-dark">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number" data-target="45" data-suffix="+">0</div>
+          <div class="stat-label">Countries Served</div>
+          <div class="stat-subtext">Global Trade Reach</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-number" data-target="150000" data-suffix=" MT">0</div>
+          <div class="stat-label">Annual Export Volume</div>
+          <div class="stat-subtext">Agricultural Commodities</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-number" data-target="25000" data-suffix="+">0</div>
+          <div class="stat-label">Farmer Network</div>
+          <div class="stat-subtext">Verified Highland Growers</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-number" data-target="18" data-suffix=" Yrs">0</div>
+          <div class="stat-label">Industry Leadership</div>
+          <div class="stat-subtext">Sourcing Excellence</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TARGET INDUSTRIES SERVED -->
+  <section id="industries" class="section section-organic">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">B2B Sectors</span>
+        <h2 class="section-title">Industries We Empower Globally</h2>
+        <p class="section-description">
+          Tailored raw material bulk supply solutions for specialized commercial sectors worldwide.
+        </p>
+      </div>
+
+      <div class="industries-grid">
+        <div class="industry-card">
+          <div class="industry-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+          </div>
+          <h3 class="industry-title">Food Processing & Manufacturing</h3>
+          <p class="industry-desc">High-purity sesame, pulses, and raw ingredients for industrial food products, tahini, and canned goods.</p>
+        </div>
+
+        <div class="industry-card">
+          <div class="industry-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+          </div>
+          <h3 class="industry-title">Vegetable Oil Refineries</h3>
+          <p class="industry-desc">Bulk oilseed supply (Humera sesame, Niger seed, sunflower) engineered for high oil extraction yields.</p>
+        </div>
+
+        <div class="industry-card">
+          <div class="industry-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>
+          </div>
+          <h3 class="industry-title">Specialty Coffee Roasters</h3>
+          <p class="industry-desc">Single-origin Grade 1 Arabica coffee beans (Yirgacheffe, Sidama, Guji) with cupping scores above 87+.</p>
+        </div>
+
+        <div class="industry-card">
+          <div class="industry-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+          </div>
+          <h3 class="industry-title">Wholesale Commodity Importers</h3>
+          <p class="industry-desc">Full container load (FCL) shipments under contract terms with guaranteed specs and Djibouti port shipping.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS SECTION -->
+  <section class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Global Trust</span>
+        <h2 class="section-title">What International Buyers Say</h2>
+        <p class="section-description">
+          Long-term partnerships built on consistency, speed, and uncompromising crop quality.
+        </p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="quote-icon">“</div>
+          <p class="testimonial-text">
+            Eternal IMPEX has been our exclusive supplier of Humera white sesame seeds for 6 years. Their sorting purity (99.5%+) and reliable shipments through Djibouti port are unmatched in North Africa.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">HG</div>
+            <div>
+              <div class="author-name">Heinrich Graf</div>
+              <div class="author-role">Head of Procurement, Hamburg Food Oils (Germany)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="quote-icon">“</div>
+          <p class="testimonial-text">
+            The specialty Yirgacheffe Grade 1 coffee lots from Eternal IMPEX consistently score 88+ on cupping tests. Their GrainPro packaging ensures crop freshness across long sea transits.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">KT</div>
+            <div>
+              <div class="author-name">Kenji Takahashi</div>
+              <div class="author-role">Master Roaster, Kyoto Artisan Coffee (Japan)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="quote-icon">“</div>
+          <p class="testimonial-text">
+            Operating large-scale pulse distribution across Middle East markets requires flawless SGS inspection and speed. Eternal IMPEX always fulfills container orders on schedule.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MA</div>
+            <div>
+              <div class="author-name">Mustafa Al-Mansoor</div>
+              <div class="author-role">Director of Trade, Gulf Agri Group (Dubai, UAE)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA SECTION -->
+  <section id="contact" class="final-cta-section">
+    <div class="cta-box">
+      <h2 class="cta-title">Ready to Source Premium Ethiopian Agricultural Products?</h2>
+      <p class="cta-desc">
+        Contact our trade export specialists today to receive official specifications, sample packages, and FOB/CIF proforma quotations.
+      </p>
+      <button class="btn-primary open-quote-drawer" style="margin: 0 auto;">
+        <span>Request a Proforma Quote</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="nav-brand">
+            <div class="brand-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span class="brand-text" style="color: #fff;">ETERNAL IMPEX</span>
+          </div>
+          <p class="footer-brand-desc">
+            Ethiopia's premier B2B agricultural sourcing and export company, connecting fertile highland harvests with global supply chains.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Commodities</h4>
+          <ul class="footer-links">
+            <li><a href="#products" class="footer-link">Humera Sesame Seeds</a></li>
+            <li><a href="#products" class="footer-link">Specialty Arabica Coffee</a></li>
+            <li><a href="#products" class="footer-link">Red & White Kidney Beans</a></li>
+            <li><a href="#products" class="footer-link">Korarima Cardamom & Spices</a></li>
+            <li><a href="#products" class="footer-link">Natural Gums & Resins</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Trade Links</h4>
+          <ul class="footer-links">
+            <li><a href="#supply-chain" class="footer-link">Supply Chain Workflow</a></li>
+            <li><a href="#quality" class="footer-link">Certifications & SGS</a></li>
+            <li><a href="#stats" class="footer-link">Company Overview</a></li>
+            <li><a href="#industries" class="footer-link">Industries Served</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Global Export HQ</h4>
+          <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary);">
+            <strong>Addis Ababa Headquarters:</strong><br>
+            Bole Sub-City, Commercial Tower 5th Floor<br>
+            Addis Ababa, Ethiopia<br><br>
+            <strong>Port Operations:</strong> Djibouti Port Export Hub<br>
+            <strong>Direct Trade Email:</strong> export@eternal-impex.com
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Eternal IMPEX PLC. All Rights Reserved.</div>
+        <div style="display: flex; gap: 20px;">
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Trade</a>
+          <a href="#" class="footer-link">Export Compliance</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- B2B REQUEST A QUOTE DRAWER (MODAL) -->
+  <div id="quote-modal" class="quote-modal-backdrop">
+    <div class="quote-drawer">
+      <div class="drawer-header">
+        <h3 class="drawer-title">B2B Trade Quote Request</h3>
+        <button id="close-drawer-btn" class="close-drawer-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="quote-form">
+        <div class="form-group">
+          <label class="form-label">Select Agricultural Commodity *</label>
+          <select class="form-control" required>
+            <option value="">Choose Commodity...</option>
+            <option value="humera-sesame">Humera Natural White Sesame Seeds (99.5%)</option>
+            <option value="wollega-sesame">Wollega Type Sesame Seeds</option>
+            <option value="yirgacheffe-coffee">Yirgacheffe Grade 1 Specialty Coffee</option>
+            <option value="sidama-coffee">Sidama Natural Coffee</option>
+            <option value="red-kidney-beans">Red Kidney Beans</option>
+            <option value="cardamom">Korarima Cardamom & Spices</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Quantity (Metric Tons) *</label>
+            <input type="number" class="form-control" placeholder="e.g. 100 MT" min="1" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Incoterm Preferred *</label>
+            <select class="form-control" required>
+              <option value="FOB">FOB Port of Djibouti</option>
+              <option value="CIF">CIF Destination Port</option>
+              <option value="CFR">CFR Destination Port</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Destination Port / Country *</label>
+          <input type="text" class="form-control" placeholder="e.g. Hamburg / Rotterdam / Dubai" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Company Name *</label>
+            <input type="text" class="form-control" placeholder="Your Business Name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Person *</label>
+            <input type="text" class="form-control" placeholder="Full Name" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Corporate Email Address *</label>
+          <input type="email" class="form-control" placeholder="trade@company.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Special Packaging or Lab Specs</label>
+          <textarea class="form-control" rows="3" placeholder="Specify any custom bag printing, GrainPro requirements, or target purity..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+          <span>Submit Official Trade Inquiry</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PRODUCT SPECIFICATIONS POPUP MODAL -->
+  <div id="product-modal" class="product-modal-backdrop">
+    <div class="product-modal-content">
+      <button id="modal-close-btn" class="modal-close-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="modal-product-header">
+        <img id="modal-img" src="" alt="" class="modal-product-img">
+        <div>
+          <h3 id="modal-title" class="modal-product-title">Product Title</h3>
+          <p id="modal-desc" style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 6px;">Product Description</p>
+        </div>
+      </div>
+
+      <h4 style="color: var(--accent-gold); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Official Export Specifications</h4>
+
+      <div class="modal-specs-grid">
+        <div class="modal-spec-box">
+          <div class="spec-label">Target Purity</div>
+          <div id="modal-purity" class="spec-val">99.5%</div>
+        </div>
+        <div class="modal-spec-box">
+          <div class="spec-label">Moisture Content</div>
+          <div id="modal-moisture" class="spec-val">6% Max</div>
+        </div>
+        <div class="modal-spec-box">
+          <div class="spec-label">Region of Origin</div>
+          <div id="modal-origin" class="spec-val">Humera, Tigray</div>
+        </div>
+        <div class="modal-spec-box">
+          <div class="spec-label">Standard Packaging</div>
+          <div id="modal-packing" class="spec-val">50kg PP Bags</div>
+        </div>
+        <div class="modal-spec-box">
+          <div class="spec-label">Export Port</div>
+          <div id="modal-port" class="spec-val">Port of Djibouti</div>
+        </div>
+        <div class="modal-spec-box">
+          <div class="spec-label">Commercial Uses</div>
+          <div id="modal-app" class="spec-val">Food & Oil</div>
+        </div>
+      </div>
+
+      <button class="btn-primary open-quote-drawer" style="width: 100%; justify-content: center; margin-top: 16px;">
+        <span>Request Quote for this Product</span>
+      </button>
+    </div>
+  </div>
+
+</body>
+</html>
