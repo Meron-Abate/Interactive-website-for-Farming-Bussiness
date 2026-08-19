@@ -1,14 +1,13 @@
 /**
- * ETERNAL IMPEX — CINEMATIC SCROLL-STORY ENGINE v2
+ * ETERNAL IMPEX — CINEMATIC SCROLL-STORY ENGINE v4
  *
- * Hero:     700vh CSS-sticky  →  stages have generous HOLD windows
- *           Stage 5 gets 30% of total scroll = ~210vh of reading time
+ * Hero:     Controlled scrollytelling engine with deliberate pacing (~7 seconds of storytelling).
+ *           Captures initial scroll, synchronizes 300 frames with 5 narrative stages,
+ *           holds each scene for reading, and releases seamlessly into About Us upon 100% completion.
  *
- * About:    GSAP pinned word-reveal  →  300vh total (reveal + hold + release)
+ * About Us: Pinned scrollytelling section with smooth progressive reveals and reading holds.
  *
- * Products: CSS-sticky, 6 products × 2.5vh each  →  ENTRY / HOLD / EXIT phases
- *           Left: step num + content panels
- *           Right: image panels crossfade
+ * Products: 10 products showcase matching reference layout (01. number, vertical nav, specs & image).
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,34 +20,12 @@ gsap.registerPlugin(ScrollTrigger);
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ==========================================================================
-   1. LENIS SMOOTH SCROLL
+   1. HERO SCROLLYTELLING STATE & CONFIG
    ========================================================================== */
-let lenis;
+let heroProgress       = 0;
+let heroProgressTarget = 0;
+let heroCompleted      = false;
 
-function initLenis() {
-  if (prefersReducedMotion) return;
-
-  lenis = new Lenis({
-    duration:        1.4,
-    easing:          (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel:     true,
-    wheelMultiplier: 0.85,
-    smoothTouch:     false,
-    touchMultiplier: 1.5,
-  });
-
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
-
-  lenis.on('scroll', () => {
-    updateHeroScrollState();
-    ScrollTrigger.update();
-  });
-}
-
-/* ==========================================================================
-   2. CANVAS FRAME SEQUENCE (300 frames)
-   ========================================================================== */
 const TOTAL_FRAMES = 300;
 const FRAME_DIR    = './frames/';
 const images       = [];
@@ -67,6 +44,35 @@ const heroSection  = document.getElementById('hero');
 const scrollThumb  = document.getElementById('scroll-thumb');
 const exitVeil     = document.getElementById('hero-exit-veil');
 
+/* ==========================================================================
+   2. LENIS SMOOTH SCROLL
+   ========================================================================== */
+let lenis;
+
+function initLenis() {
+  if (prefersReducedMotion) return;
+
+  lenis = new Lenis({
+    duration:        1.3,
+    easing:          (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel:     true,
+    wheelMultiplier: 0.9,
+    smoothTouch:     false,
+    touchMultiplier: 1.5,
+  });
+
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  lenis.on('scroll', (e) => {
+    ScrollTrigger.update();
+    handlePageScroll(e.scroll);
+  });
+}
+
+/* ==========================================================================
+   3. FRAME PRELOADING & CANVAS
+   ========================================================================== */
 function getFramePath(i) {
   return `${FRAME_DIR}ezgif-frame-${String(i + 1).padStart(3, '0')}.jpg`;
 }
@@ -113,12 +119,9 @@ function preloadFrames() {
 }
 
 function dismissPreloader() {
-  setTimeout(() => { preloader?.classList.add('hidden'); }, 500);
+  setTimeout(() => { preloader?.classList.add('hidden'); }, 350);
 }
 
-/* ==========================================================================
-   3. CANVAS RENDERING
-   ========================================================================== */
 function resizeHeroCanvas() {
   if (!heroCanvas || !heroCtx) return;
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -135,7 +138,6 @@ function renderFrame(index) {
   if (!heroCtx) return;
   let img = images[index];
   if (!img || !img.complete || !img.naturalWidth) {
-    // find nearest loaded frame
     let closest = -1, minDiff = Infinity;
     for (let i = 0; i < images.length; i++) {
       if (images[i]?.complete && images[i].naturalWidth) {
@@ -162,80 +164,51 @@ window.addEventListener('resize', () => {
 }, { passive: true });
 
 /* ==========================================================================
-   4. LERP ANIMATION LOOP
+   4. HERO STORY STAGES TIMELINE (Synchronized with Majestic Pacing)
    ========================================================================== */
-function animateLoop() {
-  const diff = frameState.target - frameState.current;
-  if (Math.abs(diff) > 0.01) {
-    frameState.current += diff * 0.1;
-    renderFrame(Math.max(0, Math.min(TOTAL_FRAMES - 1, Math.round(frameState.current))));
-  }
-  updateParticles();
-  requestAnimationFrame(animateLoop);
-}
-
-/* ==========================================================================
-   5. HERO SCROLL STATE — 700vh scroll space, 5 stages, big holds
-   ========================================================================== */
-
-/**
- * Stage timeline on the 700vh canvas:
- *
- * Stage 1 (opening):       0.00 → 0.15  (105vh total, ~91vh solid)
- * gap:                     0.15 → 0.17
- * Stage 2 (sourcing):      0.17 → 0.32  (105vh total, ~91vh solid)
- * gap:                     0.32 → 0.34
- * Stage 3 (cooperatives):  0.34 → 0.50  (112vh total, ~98vh solid)
- * gap:                     0.50 → 0.52
- * Stage 4 (export):        0.52 → 0.67  (105vh total, ~91vh solid)
- * gap:                     0.67 → 0.70
- * Stage 5 (final + HOLD):  0.70 → 1.00  (210vh total, ~182vh solid!)
- *
- * FADE_WIN 0.015 → very small fade windows = maximum reading time per stage.
- */
-const FADE_WIN = 0.015;
-
 const stageRanges = [
-  { el: document.getElementById('stage-1'), start: 0.00, end: 0.15, isCenter: true  },
-  { el: document.getElementById('stage-2'), start: 0.17, end: 0.32, isCenter: false },
-  { el: document.getElementById('stage-3'), start: 0.34, end: 0.50, isCenter: false },
-  { el: document.getElementById('stage-4'), start: 0.52, end: 0.67, isCenter: false },
-  { el: document.getElementById('stage-5'), start: 0.70, end: 1.00, isCenter: true  },
+  // Scene 1: Initial composition -> Text 1 reveals -> read pause -> fade
+  { el: document.getElementById('stage-1'), start: 0.00, end: 0.20, isCenter: true  },
+  // Scene 2: Frame transit -> Text 2 reveals -> read pause -> fade
+  { el: document.getElementById('stage-2'), start: 0.20, end: 0.40, isCenter: false },
+  // Scene 3: Frame transit -> Text 3 reveals -> read pause -> fade
+  { el: document.getElementById('stage-3'), start: 0.40, end: 0.60, isCenter: false },
+  // Scene 4: Frame transit -> Text 4 reveals -> read pause -> fade
+  { el: document.getElementById('stage-4'), start: 0.60, end: 0.80, isCenter: false },
+  // Scene 5: Frame transit -> Final statement + CTA -> hold
+  { el: document.getElementById('stage-5'), start: 0.80, end: 1.00, isCenter: true  },
 ];
+
+const FADE_WIN = 0.030;
 
 function updateStoryStages(progress) {
   stageRanges.forEach(stage => {
     if (!stage.el) return;
 
-    // OUTSIDE range → hidden
     if (progress < stage.start || progress > stage.end) {
       const isAfter = progress > stage.end;
       stage.el.style.opacity       = '0';
       stage.el.style.pointerEvents = 'none';
       stage.el.classList.remove('active');
       if (stage.isCenter) {
-        stage.el.style.transform = `translateX(-50%) translateY(calc(-50% + ${isAfter ? '-28px' : '36px'}))`;
+        stage.el.style.transform = `translateX(-50%) translateY(calc(-50% + ${isAfter ? '-24px' : '30px'}))`;
       } else {
-        stage.el.style.transform = `translateY(calc(-50% + ${isAfter ? '-28px' : '36px'}))`;
+        stage.el.style.transform = `translateY(calc(-50% + ${isAfter ? '-24px' : '30px'}))`;
       }
       return;
     }
 
-    // INSIDE range — calculate opacity and y offset
     let opacity = 1, ty = 0;
 
     if (progress < stage.start + FADE_WIN) {
-      // ENTRY fade-in
       const t = (progress - stage.start) / FADE_WIN;
       opacity = t;
-      ty = 34 * (1 - t);
-    } else if (progress > stage.end - FADE_WIN) {
-      // EXIT fade-out (stage 5 never exits — it ends at 1.0)
+      ty = 28 * (1 - t);
+    } else if (progress > stage.end - FADE_WIN && stage.end < 1.0) {
       const t = (stage.end - progress) / FADE_WIN;
       opacity = t;
-      ty = -22 * (1 - t);
+      ty = -20 * (1 - t);
     }
-    // else: solid hold — opacity = 1, ty = 0
 
     stage.el.style.opacity       = opacity.toFixed(3);
     stage.el.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none';
@@ -249,40 +222,221 @@ function updateStoryStages(progress) {
     if (opacity > 0.1) stage.el.classList.add('active');
     else stage.el.classList.remove('active');
   });
+
+  // Payoff: Brighten up the final hero presentation (removing vignettes/tint)
+  const vignette = document.querySelector('.hero-vignette');
+  const atmo     = document.querySelector('.hero-atmo');
+  const canvasEl = document.getElementById('hero-canvas');
+
+  if (progress > 0.80) {
+    const t = (progress - 0.80) / 0.20; // 0.0 -> 1.0
+    if (vignette) vignette.style.opacity = (1.0 - t * 0.92).toFixed(3);
+    if (atmo)     atmo.style.opacity     = (1.0 - t * 0.95).toFixed(3);
+    if (canvasEl) {
+      canvasEl.style.filter = `brightness(${1.0 + t * 0.22}) contrast(${1.0 + t * 0.05})`;
+    }
+  } else {
+    if (vignette) vignette.style.opacity = '1';
+    if (atmo)     atmo.style.opacity     = '1';
+    if (canvasEl) canvasEl.style.filter  = 'none';
+  }
 }
 
-function updateHeroScrollState() {
-  if (!heroSection) return;
-  const rect      = heroSection.getBoundingClientRect();
-  const scrollDist = heroSection.offsetHeight - window.innerHeight;
-  const progress  = Math.max(0, Math.min(1, -rect.top / scrollDist));
+/* ==========================================================================
+   5. CONTROLLED HERO SCROLL CONTROLLER
+   ========================================================================== */
+function lockScroll() {
+  if (lenis) lenis.stop();
+  document.body.style.overflow = 'hidden';
+  document.documentElement.style.overflow = 'hidden';
+}
 
-  // Drive canvas frames
-  frameState.target = progress * (TOTAL_FRAMES - 1);
+function unlockScroll() {
+  if (lenis) lenis.start();
+  document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
+}
 
-  // Scroll progress bar
-  if (scrollThumb) scrollThumb.style.width = `${progress * 100}%`;
+function resetHeroScrollytelling() {
+  heroCompleted = false;
+  heroProgress = 0;
+  heroProgressTarget = 0;
+  frameState.current = 0;
+  frameState.target = 0;
+  
+  if (scrollThumb) scrollThumb.style.width = '0%';
+  
+  updateStoryStages(0);
+  renderFrame(0);
+  
+  if (exitVeil) exitVeil.style.opacity = '0';
+  
+  const vignette = document.querySelector('.hero-vignette');
+  const atmo     = document.querySelector('.hero-atmo');
+  const canvasEl = document.getElementById('hero-canvas');
+  if (vignette) vignette.style.opacity = '1';
+  if (atmo)     atmo.style.opacity     = '1';
+  if (canvasEl) canvasEl.style.filter  = 'none';
 
-  // Text stages
-  updateStoryStages(progress);
+  lockScroll();
+}
 
-  // Exit veil: fades in as stage-5 exits (progress 0.97 → 1.0)
-  if (exitVeil) {
-    const veilT = Math.max(0, (progress - 0.97) / 0.03);
-    exitVeil.style.opacity = (veilT * 0.85).toFixed(3);
+function initHeroScrollytelling() {
+  // Bind clickable logo reset & scroll to top
+  const logoBtn = document.querySelector('.site-logo');
+  if (logoBtn) {
+    logoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetHeroScrollytelling();
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 1.4 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
   }
 
-  // Header background
-  if (-rect.top > 60) headerEl?.classList.add('scrolled');
+  if (prefersReducedMotion) {
+    heroCompleted = true;
+    heroProgress = 1;
+    heroProgressTarget = 1;
+    updateStoryStages(1);
+    renderFrame(TOTAL_FRAMES - 1);
+    return;
+  }
+
+  // Initial scroll lock on load
+  if (window.scrollY <= 4) {
+    lockScroll();
+  }
+
+  // Wheel listener: controls hero progress when at top of page (slow, deliberate)
+  window.addEventListener('wheel', (e) => {
+    const atTop = window.scrollY <= 4;
+
+    if (!heroCompleted) {
+      // Locked state: wheel increments/decrements hero story
+      e.preventDefault();
+      const step = Math.min(0.012, Math.max(0.0015, Math.abs(e.deltaY) * 0.00008));
+      
+      if (e.deltaY > 0) {
+        heroProgressTarget = Math.min(1.0, heroProgressTarget + step);
+      } else {
+        heroProgressTarget = Math.max(0.0, heroProgressTarget - step);
+      }
+      return;
+    }
+
+    // Completed state: if at top and scrolling UP, re-lock and reverse
+    if (atTop && e.deltaY < 0) {
+      e.preventDefault();
+      heroCompleted = false;
+      lockScroll();
+      const step = Math.min(0.012, Math.max(0.0015, Math.abs(e.deltaY) * 0.00008));
+      heroProgressTarget = Math.max(0.0, 1.0 - step);
+    }
+  }, { passive: false });
+
+  // Touch listener for mobile gestures
+  let touchStartY = 0;
+  window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    const atTop = window.scrollY <= 4;
+    const currentY = e.touches[0].clientY;
+    const deltaY = touchStartY - currentY; // positive is swipe up (scroll down)
+
+    if (!heroCompleted) {
+      e.preventDefault();
+      const step = Math.min(0.016, Math.abs(deltaY) * 0.00022);
+      if (deltaY > 0) {
+        heroProgressTarget = Math.min(1.0, heroProgressTarget + step);
+      } else {
+        heroProgressTarget = Math.max(0.0, heroProgressTarget - step);
+      }
+      touchStartY = currentY;
+      return;
+    }
+
+    if (atTop && deltaY < 0) {
+      e.preventDefault();
+      heroCompleted = false;
+      lockScroll();
+      const step = Math.min(0.016, Math.abs(deltaY) * 0.00022);
+      heroProgressTarget = Math.max(0.0, 1.0 - step);
+      touchStartY = currentY;
+    }
+  }, { passive: false });
+
+  // Keyboard navigation support
+  window.addEventListener('keydown', (e) => {
+    const atTop = window.scrollY <= 4;
+    
+    if (!heroCompleted) {
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        heroProgressTarget = Math.min(1.0, heroProgressTarget + 0.022);
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        heroProgressTarget = Math.max(0.0, heroProgressTarget - 0.022);
+      }
+      return;
+    }
+
+    if (atTop && (e.key === 'ArrowUp' || e.key === 'PageUp')) {
+      e.preventDefault();
+      heroCompleted = false;
+      lockScroll();
+      heroProgressTarget = Math.max(0.0, 1.0 - 0.022);
+    }
+  });
+}
+
+function handlePageScroll(scrollY) {
+  if (scrollY > 60) headerEl?.classList.add('scrolled');
   else headerEl?.classList.remove('scrolled');
 }
 
-window.addEventListener('scroll', updateHeroScrollState, { passive: true });
+/* ==========================================================================
+   6. ANIMATION LERP LOOP
+   ========================================================================== */
+function animateLoop() {
+  // Lerp Hero story progress smoothly
+  const heroDiff = heroProgressTarget - heroProgress;
+  if (Math.abs(heroDiff) > 0.0005) {
+    heroProgress += heroDiff * 0.075;
+    
+    // Sync canvas frames directly with hero progress
+    frameState.target = heroProgress * (TOTAL_FRAMES - 1);
+    
+    if (scrollThumb) scrollThumb.style.width = `${heroProgress * 100}%`;
+    updateStoryStages(heroProgress);
+  }
+
+  // Lerp Canvas frame rendering
+  const frameDiff = frameState.target - frameState.current;
+  if (Math.abs(frameDiff) > 0.01) {
+    frameState.current += frameDiff * 0.10;
+    renderFrame(Math.max(0, Math.min(TOTAL_FRAMES - 1, Math.round(frameState.current))));
+  }
+
+  // Check if hero has reached final frame and unlock scrolling
+  const isFinished = (heroProgressTarget >= 1.0 && heroProgress >= 0.99 && Math.round(frameState.current) >= TOTAL_FRAMES - 1);
+  if (isFinished && !heroCompleted) {
+    heroCompleted = true;
+    unlockScroll();
+  }
+
+  updateParticles();
+  requestAnimationFrame(animateLoop);
+}
 
 /* ==========================================================================
-   6. AMBIENT PARTICLES
+   7. AMBIENT PARTICLES
    ========================================================================== */
-const particles   = [];
+const particles      = [];
 const PARTICLE_COUNT = 28;
 
 function resizeParticlesCanvas() {
@@ -325,7 +479,7 @@ function updateParticles() {
 }
 
 /* ==========================================================================
-   7. CUSTOM CURSOR
+   8. CUSTOM CURSOR
    ========================================================================== */
 function initCursor() {
   const cursorEl   = document.getElementById('cursor');
@@ -346,14 +500,14 @@ function initCursor() {
     requestAnimationFrame(animateCursor);
   })();
 
-  document.querySelectorAll('button, a, .industry-row, .quality-cert, .testimonial-btn, .prod-dot').forEach(el => {
+  document.querySelectorAll('button, a, .industry-row, .quality-cert, .testimonial-btn, .prod-menu-btn').forEach(el => {
     el.addEventListener('mouseenter', () => cursorEl.classList.add('is-hovering'));
     el.addEventListener('mouseleave', () => cursorEl.classList.remove('is-hovering'));
   });
 }
 
 /* ==========================================================================
-   8. CHAPTER PROGRESS NAV
+   9. CHAPTER PROGRESS NAV
    ========================================================================== */
 function initChapterNav() {
   const chapterNav = document.getElementById('chapter-nav');
@@ -361,7 +515,6 @@ function initChapterNav() {
   const navBtns    = document.querySelectorAll('.chapter-nav-btn');
   if (!chapterNav) return;
 
-  // Show after hero
   ScrollTrigger.create({
     trigger: '#chapter-farm',
     start: 'top 80%',
@@ -369,18 +522,22 @@ function initChapterNav() {
     onLeaveBack: () => chapterNav.classList.remove('visible'),
   });
 
-  // Scroll to section on click
   navBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const target = btn.dataset.target;
       if (!target) return;
+      
+      // Auto complete hero if jumping forward
+      heroCompleted = true;
+      heroProgressTarget = 1;
+      heroProgress = 1;
+
       const el = document.querySelector(target);
       if (!el) return;
-      lenis ? lenis.scrollTo(el, { offset: 0, duration: 1.5 }) : el.scrollIntoView({ behavior: 'smooth' });
+      lenis ? lenis.scrollTo(el, { offset: 0, duration: 1.3 }) : el.scrollIntoView({ behavior: 'smooth' });
     });
   });
 
-  // Active chapter highlighting
   const chapterSections = [
     { id: 'hero',             key: 'hero'     },
     { id: 'chapter-farm',    key: 'farm'     },
@@ -406,312 +563,293 @@ function initChapterNav() {
 }
 
 /* ==========================================================================
-   9. CHAPTER 1 — THE FARM — Centered word reveal with hold
+   10. CHAPTER 1 — ABOUT US SCROLLYTELLING
    ========================================================================== */
 function initChapterFarm() {
   const aboutText    = document.getElementById('about-reveal-text');
+  const aboutHeadline= document.getElementById('about-headline');
+  const aboutPillars = document.getElementById('about-pillars');
   const farmSticky   = document.getElementById('chapter-farm-sticky');
   if (!aboutText || !farmSticky || prefersReducedMotion) return;
 
-  // Split into word spans
   const words = aboutText.textContent.trim().split(/\s+/);
   aboutText.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
   const wordEls = aboutText.querySelectorAll('.word');
 
-  gsap.set(wordEls, { color: 'var(--text-muted)' });
+  gsap.set(wordEls, { color: 'rgba(244, 237, 216, 0.2)' });
+  gsap.set(aboutHeadline, { opacity: 0.25, y: 15 });
+  gsap.set(aboutPillars,  { opacity: 0.15, y: 24 });
 
-  /**
-   * Timeline structure (pinned):
-   *  0% → 65%  — words reveal progressively (scrubbed)
-   *  65% → 100% — all words lit, section HOLDS (reading phase)
-   *
-   * The 35% tail at full brightness = reading time where nothing changes
-   * even though the user continues scrolling.
-   *
-   * Total scroll distance = window.innerHeight * 3 (300vh)
-   * Reading hold = 35% × 300vh ≈ 105vh of solid readable text.
-   */
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: farmSticky,
-      start:      'top top',
-      end:        `+=${window.innerHeight * 3}`,
-      pin:        true,
-      pinSpacing: true,
-      scrub:      1.8,
+      start:         'top top',
+      end:           `+=${window.innerHeight * 2.4}`,
+      pin:           true,
+      pinSpacing:    true,
+      scrub:         1.2,
       anticipatePin: 1,
     }
   });
 
-  // Words reveal over 0→0.65 of the timeline (normalized to duration 1)
-  tl.to(wordEls, {
-    color:   'var(--cream)',
-    stagger: { each: 0.05 },
-    ease:    'none',
-    duration: 0.65, // 65% of timeline
+  // 1. Headline rises and illuminates
+  tl.to(aboutHeadline, {
+    opacity: 1,
+    y: 0,
+    duration: 0.2,
+    ease: 'power1.out',
   }, 0);
 
-  // Implicit 35% tail: timeline ends at 1.0, words stay cream from 0.65→1.0
-  // — no animation needed, this is the reading HOLD
-}
+  // 2. Story text words illuminate sequentially
+  tl.to(wordEls, {
+    color: '#F4EDD8',
+    stagger: { each: 0.03 },
+    ease: 'none',
+    duration: 0.55,
+  }, 0.08);
 
-/* ==========================================================================
-   10. CHAPTER 2 — OUR PRODUCTS  (Left content + right image, 6 products)
-   ==========================================================================
-   Scroll mapping:
-     Each product occupies an equal slice of [0, 1] progress.
-     Within each slice:
-       0.00 → 0.22  ENTRY  (text and image rise/fade in)
-       0.22 → 0.78  HOLD   (56% of slice = reading time)
-       0.78 → 1.00  EXIT   (text rises out, next begins entering)
+  // 3. Supporting capability pillars rise into view
+  tl.to(aboutPillars, {
+    opacity: 1,
+    y: 0,
+    duration: 0.25,
+    ease: 'power2.out',
+  }, 0.5);
 
-   Scroll distance per product = window.innerHeight × 2.5
-   Reading hold per product = 56% × 2.5vh ≈ 1.4 viewport-heights
+  // 4. Reading hold from 0.75 -> 1.0 before releasing into products
+}/* ==========================================================================
+   11. CHAPTER 2 — OUR PRODUCTS: Sequenced Editorial Visual Story
+   Sequence: First image changes -> Then description reveals -> Reading hold
    ========================================================================== */
 function initChapterProducts() {
-  const wrapper    = document.getElementById('prod-scroll-wrapper');
-  const sticky     = document.querySelector('.prod-sticky');
-  const panels     = document.querySelectorAll('.prod-panel');
-  const imgWraps   = document.querySelectorAll('.prod-img-wrap');
-  const stepNumEl  = document.getElementById('prod-step-num');
-  const progFill   = document.getElementById('prod-progress-fill');
-  const dots       = document.querySelectorAll('.prod-dot');
+  const wrapper     = document.getElementById('prod-scroll-wrapper');
+  const sticky      = document.querySelector('.prod-sticky');
+  const panels      = document.querySelectorAll('.prod-panel');
+  const imgWraps    = document.querySelectorAll('.prod-img-wrap');
+  const hugeNumEl   = document.getElementById('prod-huge-num');
+  const menuList    = document.querySelector('.prod-menu');
+  const menuItems   = document.querySelectorAll('.prod-menu-item');
+  const menuBtns    = document.querySelectorAll('.prod-menu-btn');
 
-  if (!wrapper || panels.length === 0) return;
+  if (!sticky || panels.length === 0) return;
 
   const PROD_COUNT = panels.length;
 
-  // --- Mobile: simplified, static panels ---
-  if (window.innerWidth <= 900) {
-    wrapper.style.height = 'auto';
-    sticky.style.position = 'relative';
-    sticky.style.height   = 'auto';
-
+  // Mobile layout fallback
+  if (window.innerWidth <= 960) {
     panels.forEach((p, i) => {
-      p.style.position     = 'relative';
-      p.style.opacity      = '1';
-      p.style.pointerEvents = 'auto';
-      p.style.transform    = 'none';
+      p.style.display = i === 0 ? 'flex' : 'none';
+      p.style.opacity = '1';
+      p.style.position = 'relative';
     });
 
     imgWraps.forEach((w, i) => {
-      w.style.position = 'relative';
-      w.style.inset    = 'auto';
-      w.style.opacity  = '1';
+      w.style.display = i === 0 ? 'flex' : 'none';
+      w.style.opacity = '1';
     });
 
-    // dot navigation
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        panels.forEach((p, j) => { p.style.display = j === i ? 'flex' : 'none'; });
-        imgWraps.forEach((w, j) => { w.style.display = j === i ? 'block' : 'none'; });
-        dots.forEach((d, j) => d.classList.toggle('active', j === i));
-        updateStepNum(i);
-        updateProgressBar(i);
+    menuBtns.forEach((btn, i) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        setActiveProduct(i);
       });
     });
 
-    panels.forEach((p, i) => { p.style.display = i === 0 ? 'flex' : 'none'; });
-    imgWraps.forEach((w, i) => { w.style.display = i === 0 ? 'block' : 'none'; });
+    function setActiveProduct(idx) {
+      panels.forEach((p, j) => { p.style.display = j === idx ? 'flex' : 'none'; });
+      imgWraps.forEach((w, j) => { w.style.display = j === idx ? 'flex' : 'none'; });
+      menuItems.forEach((m, j) => m.classList.toggle('active', j === idx));
+      if (hugeNumEl) hugeNumEl.textContent = `${String(idx + 1).padStart(2, '0')}.`;
+    }
     return;
   }
 
-  // --- Desktop: scroll-driven ---
-  const PER_PROD_H = window.innerHeight * 2.5;
-  wrapper.style.height = `${window.innerHeight + PROD_COUNT * PER_PROD_H}px`;
+  // Desktop: GSAP Pinned Scrollytelling
+  const pinDist = PROD_COUNT * window.innerHeight * 2.2;
 
-  // Phase thresholds (within each product's 0→1 slice)
-  const ENTRY_END = 0.22; // entry complete
-  const HOLD_END  = 0.78; // hold ends, exit begins
-  // NOTE: next product starts entering during the EXIT phase of current
+  // Sequenced Timing Thresholds within each product slice (0.0 -> 1.0)
+  // 1. 0.00 -> 0.22 : Image transitions in first
+  // 2. 0.22 -> 0.45 : Description animates in second
+  // 3. 0.45 -> 0.85 : Reading hold (both image & text settled)
+  // 4. 0.85 -> 1.00 : Exit phase
+  const IMG_ENTRY_END  = 0.22;
+  const TEXT_ENTRY_END = 0.45;
+  const HOLD_END       = 0.85;
 
-  // Initial state
+  // Set initial product state
   panels.forEach((panel, i) => {
-    const imgWrap = imgWraps[i];
+    const imgWrap  = imgWraps[i];
+    const imgInner = imgWrap?.querySelector('.prod-img-inner');
+
     if (i === 0) {
-      gsap.set(panel,   { opacity: 1, pointerEvents: 'auto' });
-      gsap.set(imgWrap, { opacity: 1, scale: 1 });
+      gsap.set(panel,    { opacity: 1, pointerEvents: 'auto' });
+      gsap.set(imgWrap,  { opacity: 1 });
+      if (imgInner) gsap.set(imgInner, { scale: 1, y: 0 });
       panel.classList.add('active');
       imgWrap?.classList.add('active');
-      setElementContent(panel, 1, 0, 1, 0);  // fully visible
+      setProductContent(panel, 1, 0);
     } else {
-      gsap.set(panel,   { opacity: 0, pointerEvents: 'none' });
-      gsap.set(imgWrap, { opacity: 0, scale: 0.97 });
-      setElementContent(panel, 0, 60, 0, 60);  // hidden below
+      gsap.set(panel,    { opacity: 0, pointerEvents: 'none' });
+      gsap.set(imgWrap,  { opacity: 0 });
+      if (imgInner) gsap.set(imgInner, { scale: 0.93, y: 40 });
+      setProductContent(panel, 0, 40);
     }
   });
 
-  let lastProductIdx = 0;
+  let lastActiveIdx = 0;
 
-  ScrollTrigger.create({
-    trigger:    wrapper,
-    start:      'top top',
-    end:        'bottom bottom',
-    onUpdate:   self => {
-      const rawIdx     = self.progress * PROD_COUNT;
-      const prodIdx    = Math.min(PROD_COUNT - 1, Math.floor(rawIdx));
-      const fraction   = rawIdx - prodIdx; // 0 → 1 within this product
+  const prodST = ScrollTrigger.create({
+    trigger:       sticky,
+    start:         'top top',
+    end:           `+=${pinDist}`,
+    pin:           true,
+    pinSpacing:    true,
+    scrub:         1.2,
+    anticipatePin: 1,
+    onUpdate:      self => {
+      // Map global progress 0.0 -> 1.0 to product range 0.0 -> 3.0
+      const globalProgress = self.progress * (PROD_COUNT - 1);
+      const prodIdx  = Math.min(PROD_COUNT - 1, Math.floor(globalProgress));
+      const fraction = globalProgress - prodIdx; // 0.0 -> 1.0 within active slice
 
-      // update step number if product changed
-      if (prodIdx !== lastProductIdx) {
-        updateStepNum(prodIdx);
-        lastProductIdx = prodIdx;
+      // Sync menu and huge numbers exactly with description transition midpoint (0.38)
+      const textActiveIdx = fraction >= 0.38 ? Math.min(PROD_COUNT - 1, prodIdx + 1) : prodIdx;
+      if (textActiveIdx !== lastActiveIdx) {
+        updateHugeNum(textActiveIdx);
+        updateActiveMenu(textActiveIdx);
+        lastActiveIdx = textActiveIdx;
       }
 
-      updateProgressBar(prodIdx);
-      updateDots(prodIdx);
-
       panels.forEach((panel, i) => {
-        const imgWrap = imgWraps[i];
-        const isLast  = (i === PROD_COUNT - 1);
+        const imgWrap  = imgWraps[i];
+        const imgInner = imgWrap?.querySelector('.prod-img-inner');
 
-        if (i < prodIdx) {
-          // Fully past — hide
-          gsap.set(panel,   { opacity: 0, pointerEvents: 'none' });
-          gsap.set(imgWrap, { opacity: 0, scale: 0.96 });
-          setElementContent(panel, 0, -40, 0, -40);
-          panel.classList.remove('active');
-          imgWrap?.classList.remove('active');
-
-        } else if (i === prodIdx) {
-          // CURRENT product
-          const isLastProd = isLast;
-          let pOpacity, imgOpacity, imgScale, contentY, contentOpacity;
-
-          if (fraction < ENTRY_END) {
-            // ENTRY phase
-            const t = fraction / ENTRY_END;
-            const easeT = 1 - Math.pow(1 - t, 3); // cubic ease out
-            pOpacity       = easeT;
-            imgOpacity     = easeT;
-            imgScale       = 0.97 + 0.03 * easeT;
-            contentY       = 44 * (1 - easeT);
-            contentOpacity = Math.min(1, easeT * 1.4);
-          } else if (fraction < HOLD_END || isLastProd) {
-            // HOLD phase — everything fully visible, nothing changes
-            pOpacity       = 1;
-            imgOpacity     = 1;
-            imgScale       = 1;
-            contentY       = 0;
-            contentOpacity = 1;
-          } else {
-            // EXIT phase
-            const exitT   = (fraction - HOLD_END) / (1 - HOLD_END);
-            const easeT   = exitT * exitT; // ease in
-            pOpacity       = Math.max(0, 1 - easeT * 1.4);
-            imgOpacity     = Math.max(0, 1 - easeT * 0.6);
-            imgScale       = 1 - easeT * 0.04;
-            contentY       = -50 * easeT;
-            contentOpacity = Math.max(0, 1 - easeT * 1.5);
-          }
-
-          gsap.set(panel,   { opacity: pOpacity,   pointerEvents: pOpacity > 0.1 ? 'auto' : 'none' });
-          gsap.set(imgWrap, { opacity: imgOpacity,  scale: imgScale });
-          setElementContent(panel, contentOpacity, contentY, contentOpacity, contentY);
-
-          panel.classList.toggle('active',  pOpacity > 0.05);
-          imgWrap?.classList.toggle('active', imgOpacity > 0.05);
-
-        } else if (i === prodIdx + 1) {
-          // NEXT product — enters DURING the exit phase of current
-          const enterZoneStart = HOLD_END;
-          let enterOpacity, imgOpacity, imgScale, contentY;
-
-          if (fraction >= enterZoneStart) {
-            const enterT  = (fraction - enterZoneStart) / (1 - enterZoneStart);
-            const easeT   = 1 - Math.pow(1 - enterT, 2); // ease out
-            enterOpacity  = Math.min(1, easeT * 1.3);
-            imgOpacity    = Math.min(1, easeT * 0.9);
-            imgScale      = 0.97 + 0.03 * easeT;
-            contentY      = 56 * (1 - easeT);
-          } else {
-            enterOpacity  = 0;
-            imgOpacity    = 0;
-            imgScale      = 0.97;
-            contentY      = 56;
-          }
-
-          gsap.set(panel,   { opacity: enterOpacity, pointerEvents: enterOpacity > 0.5 ? 'auto' : 'none' });
-          gsap.set(imgWrap, { opacity: imgOpacity,   scale: imgScale });
-          setElementContent(panel, Math.max(0, enterOpacity - 0.05), contentY, Math.max(0, enterOpacity - 0.1), contentY * 1.1);
-
-          panel.classList.toggle('active',  enterOpacity > 0.05);
-          imgWrap?.classList.toggle('active', imgOpacity > 0.05);
-
-        } else {
-          // Future — fully hidden
-          gsap.set(panel,   { opacity: 0, pointerEvents: 'none' });
-          gsap.set(imgWrap, { opacity: 0, scale: 0.97 });
-          setElementContent(panel, 0, 56, 0, 70);
-          panel.classList.remove('active');
-          imgWrap?.classList.remove('active');
+        // 1. IMAGE SHOWCASE: Direct, continuous cross-fade and parallax slide
+        const diff = i - globalProgress;
+        const absDiff = Math.abs(diff);
+        
+        let imgOpacity = 0;
+        if (absDiff < 1.0) {
+          const t = 1.0 - absDiff;
+          imgOpacity = t * t * (3 - 2 * t); // Smooth cubic ease
         }
+        
+        const tScale = Math.min(1.0, absDiff);
+        const imgScale = diff > 0 ? (0.93 + 0.07 * (1.0 - tScale)) : (1.0 + 0.05 * tScale);
+        const imgY = diff * 45;
+
+        gsap.set(imgWrap, { opacity: imgOpacity });
+        if (imgInner) {
+          gsap.set(imgInner, { scale: imgScale, y: imgY });
+        }
+
+        // 2. DESCRIPTION TEXT PANELS: Delayed stagger transition after image starts
+        let textOpacity = 0;
+        let textY = 35;
+
+        if (i === prodIdx) {
+          if (fraction < 0.20) {
+            textOpacity = 1.0;
+            textY = 0;
+          } else if (fraction < 0.55) {
+            const t = (fraction - 0.20) / 0.35;
+            textOpacity = 1.0 - t;
+            textY = -35 * t;
+          } else {
+            textOpacity = 0.0;
+            textY = -35;
+          }
+        } else if (i === prodIdx + 1) {
+          if (fraction < 0.20) {
+            textOpacity = 0.0;
+            textY = 35;
+          } else if (fraction < 0.55) {
+            const t = (fraction - 0.20) / 0.35;
+            textOpacity = t;
+            textY = 35 * (1.0 - t);
+          } else {
+            textOpacity = 1.0;
+            textY = 0;
+          }
+        } else {
+          textOpacity = 0.0;
+          textY = i < prodIdx ? -35 : 35;
+        }
+
+        gsap.set(panel, { opacity: textOpacity, pointerEvents: textOpacity > 0.1 ? 'auto' : 'none' });
+        setProductContent(panel, textOpacity, textY);
+
+        panel.classList.toggle('active', textOpacity > 0.05);
+        imgWrap?.classList.toggle('active', imgOpacity > 0.05);
       });
     }
   });
 
-  // ---- helpers ----
-  function setElementContent(panel, opacity, y, specOpacity, specY) {
-    const cat   = panel.querySelector('.prod-cat');
-    const title = panel.querySelector('.prod-title');
-    const desc  = panel.querySelector('.prod-desc');
-    const specs = panel.querySelector('.prod-specs');
+  // Staggered child element animation helper for editorial typography
+  function setProductContent(panel, opacity, y) {
+    const cat   = panel.querySelector('.prod-cat-tag');
+    const title = panel.querySelector('.prod-main-title');
+    const desc  = panel.querySelector('.prod-short-desc');
+    const specs = panel.querySelector('.prod-mini-specs');
     const cta   = panel.querySelector('.prod-cta');
 
-    if (cat)   gsap.set(cat,   { opacity: Math.max(0, opacity),             y: y * 0.6 });
-    if (title) gsap.set(title, { opacity: Math.max(0, opacity),             y: y });
-    if (desc)  gsap.set(desc,  { opacity: Math.max(0, opacity - 0.05),      y: y * 1.05 });
-    if (specs) gsap.set(specs, { opacity: Math.max(0, specOpacity - 0.1),   y: specY });
-    if (cta)   gsap.set(cta,   { opacity: Math.max(0, specOpacity - 0.15),  y: specY * 1.1 });
+    if (cat)   gsap.set(cat,   { opacity: Math.max(0, opacity),        y: y * 0.6 });
+    if (title) gsap.set(title, { opacity: Math.max(0, opacity),        y: y * 0.9 });
+    if (desc)  gsap.set(desc,  { opacity: Math.max(0, opacity - 0.05), y: y * 1.1 });
+    if (specs) gsap.set(specs, { opacity: Math.max(0, opacity - 0.1),  y: y * 1.18 });
+    if (cta)   gsap.set(cta,   { opacity: Math.max(0, opacity - 0.15), y: y * 1.25 });
   }
 
-  function updateStepNum(idx) {
-    if (!stepNumEl) return;
-    gsap.to(stepNumEl, {
-      opacity: 0, y: -16, duration: 0.18,
+  function updateHugeNum(idx) {
+    if (!hugeNumEl) return;
+    gsap.to(hugeNumEl, {
+      opacity: 0, y: -12, duration: 0.15,
       onComplete: () => {
-        stepNumEl.textContent = String(idx + 1).padStart(2, '0');
-        gsap.to(stepNumEl, { opacity: 1, y: 0, duration: 0.25 });
+        hugeNumEl.textContent = `${String(idx + 1).padStart(2, '0')}.`;
+        gsap.to(hugeNumEl, { opacity: 1, y: 0, duration: 0.22, ease: 'power2.out' });
       }
     });
   }
 
-  function updateProgressBar(idx) {
-    if (!progFill) return;
-    const pct = ((idx + 1) / PROD_COUNT) * 100;
-    gsap.to(progFill, { height: `${pct}%`, duration: 0.5, ease: 'power2.out' });
+  function updateActiveMenu(idx) {
+    menuItems.forEach((item, i) => {
+      item.classList.toggle('active', i === idx);
+    });
+
+    if (menuList && menuItems[idx]) {
+      const activeEl = menuItems[idx];
+      const offsetTop = activeEl.offsetTop - menuList.offsetTop - 30;
+      menuList.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
   }
 
-  function updateDots(idx) {
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-  }
+  // Click on any product name in vertical menu to jump directly to it
+  menuBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetIdx = parseInt(btn.dataset.prodTarget, 10);
+      if (isNaN(targetIdx)) return;
 
-  // Dot clicks
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-      const wTop   = wrapper.getBoundingClientRect().top + window.scrollY;
-      const frac   = i / PROD_COUNT + 0.001; // small offset into the product's range
-      const targetY = wTop + frac * (wrapper.offsetHeight - window.innerHeight);
-      if (lenis) lenis.scrollTo(targetY, { duration: 1.4 });
-      else window.scrollTo({ top: targetY, behavior: 'smooth' });
+      const targetScroll = prodST.start + (targetIdx / PROD_COUNT + 0.02) * pinDist;
+
+      if (lenis) lenis.scrollTo(targetScroll, { duration: 1.3 });
+      else window.scrollTo({ top: targetScroll, behavior: 'smooth' });
     });
   });
 }
 
 /* ==========================================================================
-   11. CHAPTER 3 — THE QUALITY
+   12. CHAPTER 3 — THE QUALITY
    ========================================================================== */
 function initChapterQuality() {
-  // Cert rows reveal
   document.querySelectorAll('.quality-cert').forEach((cert, i) => {
     gsap.to(cert, {
       opacity: 1, x: 0,
-      duration: 0.9, ease: 'power3.out', delay: i * 0.12,
+      duration: 0.9, ease: 'power3.out', delay: i * 0.1,
       scrollTrigger: { trigger: cert, start: 'top 80%', once: true }
     });
   });
 
-  // Header block
   const hb = document.querySelector('.quality-header-block');
   if (hb) {
     gsap.from(hb, {
@@ -720,7 +858,6 @@ function initChapterQuality() {
     });
   }
 
-  // Industries accordion
   document.querySelectorAll('.industry-row').forEach((row, i) => {
     gsap.from(row, {
       y: 24, opacity: 0, duration: 0.7, ease: 'power3.out', delay: i * 0.08,
@@ -736,7 +873,7 @@ function initChapterQuality() {
 }
 
 /* ==========================================================================
-   12. TESTIMONIALS
+   13. TESTIMONIALS
    ========================================================================== */
 function initTestimonials() {
   const slides  = document.querySelectorAll('.testimonial-slide');
@@ -773,7 +910,7 @@ function initTestimonials() {
 }
 
 /* ==========================================================================
-   13. CHAPTER 4 — THE FUTURE
+   14. CHAPTER 4 — THE FUTURE
    ========================================================================== */
 function initChapterFuture() {
   const words = document.querySelectorAll('.future-word');
@@ -791,7 +928,7 @@ function initChapterFuture() {
 }
 
 /* ==========================================================================
-   14. CHAPTER 5 — CONTACT + FOOTER
+   15. CHAPTER 5 — CONTACT + FOOTER
    ========================================================================== */
 function initChapterContact() {
   gsap.from('.contact-left > *', {
@@ -811,7 +948,7 @@ function initChapterContact() {
 }
 
 /* ==========================================================================
-   15. NAV LINK HIGHLIGHTS
+   16. NAV LINK HIGHLIGHTS & AUTO-HERO COMPLETION
    ========================================================================== */
 function initNavHighlight() {
   const navLinks = document.querySelectorAll('.site-nav-link');
@@ -834,10 +971,31 @@ function initNavHighlight() {
   function setActiveNav(key) {
     navLinks.forEach(link => link.classList.toggle('active', link.dataset.section === key));
   }
+
+  // If user clicks a nav link from hero, complete hero and scroll smoothly
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+      const targetEl = document.querySelector(targetId);
+      if (!targetEl) return;
+
+      e.preventDefault();
+      heroCompleted = true;
+      heroProgressTarget = 1;
+      heroProgress = 1;
+      
+      updateStoryStages(1);
+      renderFrame(TOTAL_FRAMES - 1);
+      unlockScroll();
+
+      lenis ? lenis.scrollTo(targetEl, { duration: 1.3 }) : targetEl.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
 }
 
 /* ==========================================================================
-   16. MOBILE MENU
+   17. MOBILE MENU
    ========================================================================== */
 function initMobileMenu() {
   const menuBtn    = document.getElementById('mobile-menu-btn');
@@ -863,7 +1021,7 @@ function initMobileMenu() {
 }
 
 /* ==========================================================================
-   17. QUOTE DRAWER
+   18. QUOTE DRAWER
    ========================================================================== */
 function initQuoteDrawer() {
   const modal     = document.getElementById('quote-modal');
@@ -878,7 +1036,11 @@ function initQuoteDrawer() {
     'yirgacheffe-coffee':'yirgacheffe-coffee',
     'sidama-coffee':    'sidama-coffee',
     'red-kidney-beans': 'red-kidney-beans',
+    'white-pea-beans':  'white-pea-beans',
     'cardamom':         'cardamom',
+    'black-cumin':      'black-cumin',
+    'ginger-turmeric':  'ginger-turmeric',
+    'soybeans':         'soybeans',
   };
 
   function openDrawer(productKey) {
@@ -931,7 +1093,7 @@ function initQuoteDrawer() {
 }
 
 /* ==========================================================================
-   18. KEYBOARD
+   19. KEYBOARD
    ========================================================================== */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
@@ -943,9 +1105,10 @@ document.addEventListener('keydown', e => {
 });
 
 /* ==========================================================================
-   19. INIT ALL
+   20. INIT ALL
    ========================================================================== */
 function initAllSections() {
+  initHeroScrollytelling();
   initCursor();
   initChapterNav();
   initChapterFarm();
@@ -961,11 +1124,11 @@ function initAllSections() {
 }
 
 /* ==========================================================================
-   20. BOOTSTRAP
+   21. BOOTSTRAP
    ========================================================================== */
 preloadFrames();
 initParticles();
-updateHeroScrollState();
+updateStoryStages(0);
 animateLoop();
 
 }); // end DOMContentLoaded

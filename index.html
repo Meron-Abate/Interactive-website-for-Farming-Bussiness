@@ -18,7 +18,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
@@ -76,19 +76,19 @@
       <li class="chapter-nav-item" data-chapter="farm">
         <button class="chapter-nav-btn" data-target="#chapter-farm">
           <span class="chapter-nav-line"></span>
-          <span class="chapter-nav-label">The Farm</span>
+          <span class="chapter-nav-label">About Us</span>
         </button>
       </li>
       <li class="chapter-nav-item" data-chapter="products">
         <button class="chapter-nav-btn" data-target="#chapter-products">
           <span class="chapter-nav-line"></span>
-          <span class="chapter-nav-label">The Crops</span>
+          <span class="chapter-nav-label">Our Products</span>
         </button>
       </li>
       <li class="chapter-nav-item" data-chapter="quality">
         <button class="chapter-nav-btn" data-target="#chapter-quality">
           <span class="chapter-nav-line"></span>
-          <span class="chapter-nav-label">The Quality</span>
+          <span class="chapter-nav-label">Quality</span>
         </button>
       </li>
       <li class="chapter-nav-item" data-chapter="future">
@@ -105,13 +105,13 @@
        ===================================================================== -->
   <header id="site-header" class="site-header" role="banner">
     <a href="#hero" class="site-logo" aria-label="Eternal IMPEX Home">
-      <img src="logo.svg" alt="Eternal IMPEX" class="site-logo-img">
+      <img src="Asset 3.svg" alt="Eternal IMPEX" class="site-logo-img">
     </a>
 
     <nav class="site-nav" aria-label="Main navigation">
       <ul class="site-nav-list">
-        <li><a href="#chapter-farm" class="site-nav-link" data-section="farm">Story</a></li>
-        <li><a href="#chapter-products" class="site-nav-link" data-section="products">Crops</a></li>
+        <li><a href="#chapter-farm" class="site-nav-link" data-section="farm">About Us</a></li>
+        <li><a href="#chapter-products" class="site-nav-link" data-section="products">Products</a></li>
         <li><a href="#chapter-quality" class="site-nav-link" data-section="quality">Quality</a></li>
         <li><a href="#chapter-contact" class="site-nav-link" data-section="contact">Contact</a></li>
       </ul>
@@ -131,8 +131,8 @@
   <div class="mobile-nav-overlay" id="mobile-nav-overlay" aria-hidden="true">
     <nav class="mobile-nav" aria-label="Mobile navigation">
       <ul>
-        <li><a href="#chapter-farm"     class="mobile-nav-link">Story</a></li>
-        <li><a href="#chapter-products" class="mobile-nav-link">Crops</a></li>
+        <li><a href="#chapter-farm"     class="mobile-nav-link">About Us</a></li>
+        <li><a href="#chapter-products" class="mobile-nav-link">Products</a></li>
         <li><a href="#chapter-quality"  class="mobile-nav-link">Quality</a></li>
         <li><a href="#chapter-contact"  class="mobile-nav-link">Contact</a></li>
         <li><button class="mobile-quote-btn open-quote-drawer">Request a Quote</button></li>
@@ -141,7 +141,7 @@
   </div>
 
   <!-- =====================================================================
-       CHAPTER 0 — THE LAND  (700vh pinned hero)
+       CHAPTER 0 — THE LAND  (hero scroll-storytelling)
        ===================================================================== -->
   <section id="hero" class="hero-scroll-wrapper" aria-label="The Land — Eternal IMPEX">
     <div class="hero-sticky-scene">
@@ -156,7 +156,7 @@
       <div class="hero-vignette"  aria-hidden="true"></div>
       <div class="hero-atmo"      aria-hidden="true"></div>
       <div class="hero-grain"     aria-hidden="true"></div>
-      <!-- Exit veil — fades in as hero ends -->
+      <!-- Exit veil — fades in smoothly as hero reaches the end -->
       <div class="hero-exit-veil" id="hero-exit-veil" aria-hidden="true"></div>
 
       <!-- Story stages — driven by scroll position -->
@@ -172,14 +172,12 @@
           <div class="seed-grid" aria-label="Products">
             <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Humera Sesame</span>
             <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Red Kidney Beans</span>
-            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>White Beans</span>
+            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>White Pea Beans</span>
             <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Korarima Cardamom</span>
-            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Turmeric</span>
-            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Ginger</span>
+            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Turmeric &amp; Ginger</span>
             <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Black Seed (Nigella)</span>
-            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Chili</span>
-            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Arabica Coffee</span>
-            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Maize</span>
+            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Yirgacheffe Coffee</span>
+            <span class="seed-tag"><span class="seed-dot" aria-hidden="true"></span>Soybeans</span>
           </div>
         </div>
 
@@ -194,7 +192,7 @@
 
         <!-- Stage 3 — cooperatives (34 → 50%) -->
         <div id="stage-3" class="story-stage stage-right" role="region" aria-label="Stage 3">
-          <div class="stage-eyebrow">03 / FARMER COOPERATIVES &amp; AI SORTING</div>
+          <div class="stage-eyebrow">03 / FARMER COOPERATIVES &amp; OPTICAL SORTING</div>
           <h2 class="story-headline">Micro-Structure<br>&amp; Purity</h2>
           <p class="story-sub">
             Direct partnerships with 25,000+ certified smallholder farmers. Buhler Sortex optical sorting ensures 99.5%+ seed purity on every shipment.
@@ -206,7 +204,7 @@
           <div class="stage-eyebrow">04 / GLOBAL EXPORT LOGISTICS</div>
           <h2 class="story-headline">Scaling Agriculture<br>Worldwide</h2>
           <p class="story-sub">
-            From sesame and pulses to specialty Arabica coffee — FOB/CIF shipping with Djibouti port logistics and SGS certification.
+            From sesame and pulses to specialty Arabica coffee — FOB/CIF shipping with Djibouti port logistics and SGS inspection.
           </p>
           <div class="stage-pills">
             <span class="stage-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>99.5%+ Purity</span>
@@ -246,171 +244,200 @@
   </section>
 
   <!-- =====================================================================
-       CHAPTER 1 — THE FARM  (centered word-reveal, no stats)
+       CHAPTER 1 — ABOUT US  (Immediately after hero, smooth low-opacity to high-opacity scroll reveal)
        ===================================================================== -->
-  <section id="chapter-farm" class="chapter chapter-farm" aria-label="The Farm — Our Story">
+  <section id="chapter-farm" class="chapter chapter-farm" aria-label="About Us — Our Story">
     <div class="chapter-farm-sticky" id="chapter-farm-sticky">
-      <div class="chapter-label-wrap">
-        <span class="chapter-num" aria-hidden="true">01</span>
-        <span class="chapter-label">THE FARM</span>
+      <div class="about-container">
+        
+        <div class="chapter-label-wrap">
+          <span class="chapter-num" aria-hidden="true">01</span>
+          <span class="chapter-label">ABOUT US</span>
+        </div>
+
+        <h2 class="about-headline" id="about-headline">
+          Rooted in Ethiopia's Fertile Soil, Connected to Global Supply Chains
+        </h2>
+
+        <p class="about-reveal-text" id="about-reveal-text">
+          We combine 18 years of highland sourcing expertise with precision sorting technology to deliver Ethiopia's finest agricultural commodities to global markets — every shipment a testament to purity, traceability, and unwavering trade partnerships built across 45 countries and 25,000 grower families.
+        </p>
+
+        <div class="about-pillars" id="about-pillars">
+          <div class="about-pillar">
+            <span class="about-pillar-tag">Direct Origin</span>
+            <span class="about-pillar-desc">Highland farm gates to Djibouti port</span>
+          </div>
+          <div class="about-pillar">
+            <span class="about-pillar-tag">99.5%+ Purity</span>
+            <span class="about-pillar-desc">State-of-the-art Sortex optical cleaning</span>
+          </div>
+          <div class="about-pillar">
+            <span class="about-pillar-tag">Export Certified</span>
+            <span class="about-pillar-desc">Full SGS, ISO 22000 &amp; Phytosanitary clearance</span>
+          </div>
+        </div>
+
       </div>
-      <p class="about-reveal-text" id="about-reveal-text">
-        We combine 18 years of highland sourcing expertise with precision processing technology to deliver Ethiopia's finest agricultural commodities to global markets — every shipment a story of origin, quality, and unwavering trust built across 45 countries and 25,000 partner farmers.
-      </p>
     </div>
   </section>
 
   <!-- =====================================================================
-       CHAPTER 2 — OUR PRODUCTS  (process-style scroll, left text + right image)
+       CHAPTER 2 — OUR PRODUCTS  (Portfolio-Style Showcase with 10 Products)
+       Design: Huge 2-digit index (01.) top-left + Vertical Project list middle-left + Title & Info bottom-left + Full image right
        ===================================================================== -->
   <section id="chapter-products" class="chapter chapter-products" aria-label="Our Products — The Crops">
     <div class="prod-scroll-wrapper" id="prod-scroll-wrapper">
       <div class="prod-sticky">
 
-        <!-- Left: navigation + product story -->
+        <!-- ==================== LEFT COLUMN ==================== -->
         <div class="prod-left">
-          <div class="prod-chapter-label">
-            <span class="chapter-num" aria-hidden="true">02</span>
-            <span class="chapter-label">OUR PRODUCTS</span>
+          
+          <!-- TOP: Huge 2-Digit Index & Chapter Badge -->
+          <div class="prod-top-meta">
+            <div class="prod-huge-num" id="prod-huge-num" aria-live="polite">01.</div>
+            <div class="prod-section-badge">02 / OUR CROPS</div>
           </div>
 
-          <div class="prod-step-num" id="prod-step-num" aria-live="polite">01</div>
+          <!-- MIDDLE: Vertical Product Navigation List -->
+          <nav class="prod-menu" id="prod-menu" aria-label="Product list">
+            <ul class="prod-menu-list">
+              <li class="prod-menu-item active" data-prod-index="0">
+                <button class="prod-menu-btn" data-prod-target="0">
+                  <span class="prod-menu-dash">—</span>
+                  <span class="prod-menu-name">Humera Sesame</span>
+                </button>
+              </li>
+              <li class="prod-menu-item" data-prod-index="1">
+                <button class="prod-menu-btn" data-prod-target="1">
+                  <span class="prod-menu-dash">—</span>
+                  <span class="prod-menu-name">Yirgacheffe Coffee</span>
+                </button>
+              </li>
+              <li class="prod-menu-item" data-prod-index="2">
+                <button class="prod-menu-btn" data-prod-target="2">
+                  <span class="prod-menu-dash">—</span>
+                  <span class="prod-menu-name">Red Kidney Beans</span>
+                </button>
+              </li>
+              <li class="prod-menu-item" data-prod-index="3">
+                <button class="prod-menu-btn" data-prod-target="3">
+                  <span class="prod-menu-dash">—</span>
+                  <span class="prod-menu-name">Korarima Cardamom</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
 
-          <div class="prod-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <div class="prod-progress-fill" id="prod-progress-fill"></div>
-          </div>
+          <!-- BOTTOM: Active Product Title, Description, Specs & CTA -->
+          <div class="prod-bottom-area" id="prod-bottom-area">
 
-          <div class="prod-dots" aria-hidden="true">
-            <button class="prod-dot active" data-step="0"></button>
-            <button class="prod-dot" data-step="1"></button>
-            <button class="prod-dot" data-step="2"></button>
-            <button class="prod-dot" data-step="3"></button>
-            <button class="prod-dot" data-step="4"></button>
-            <button class="prod-dot" data-step="5"></button>
-          </div>
-
-          <div class="prod-content-area" id="prod-content-area">
-
+            <!-- 01: Humera Sesame -->
             <div class="prod-panel active" data-panel="0">
-              <div class="prod-cat">Sesame Seeds</div>
-              <h3 class="prod-title">Humera White<br>Sesame Seeds</h3>
-              <p class="prod-desc">World-renowned Ethiopian natural white sesame seeds known for superior oil content (50–54%), sweet flavor, and uniform seed size. Sourced directly from the fertile plains of Humera, Tigray.</p>
-              <div class="prod-specs">
-                <div class="prod-spec"><span class="pspec-l">Purity</span><span class="pspec-v">99.5% Min</span></div>
-                <div class="prod-spec"><span class="pspec-l">Origin</span><span class="pspec-v">Humera, Tigray</span></div>
-                <div class="prod-spec"><span class="pspec-l">Moisture</span><span class="pspec-v">6% Max</span></div>
-                <div class="prod-spec"><span class="pspec-l">Packing</span><span class="pspec-v">50kg PP / Kraft</span></div>
+              <div class="prod-cat-tag">Sesame Seeds</div>
+              <h3 class="prod-main-title">Humera Sesame</h3>
+              <p class="prod-short-desc">World-renowned natural white sesame with 50–54% oil content, sweet aroma, and uniform seed size from Tigray highlands.</p>
+              <div class="prod-mini-specs">
+                <span class="pm-spec"><strong>Purity:</strong> 99.5% Min</span>
+                <span class="pm-spec"><strong>Moisture:</strong> 6% Max</span>
+                <span class="pm-spec"><strong>Origin:</strong> Humera</span>
               </div>
-              <button class="prod-cta open-quote-drawer" data-product="humera-sesame">
-                Request Quote <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
+              <div class="prod-action-row">
+                <button class="prod-cta open-quote-drawer" data-product="humera-sesame">
+                  <span>Request Quote</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
             </div>
 
+            <!-- 02: Yirgacheffe Coffee -->
             <div class="prod-panel" data-panel="1">
-              <div class="prod-cat">Sesame Seeds</div>
-              <h3 class="prod-title">Wollega Type<br>Sesame Seeds</h3>
-              <p class="prod-desc">High-grade Ethiopian sesame seeds harvested from the western fertile lands of Oromia, offering exceptional oil yield and a distinctly nutty aroma favored by industrial oil crushers worldwide.</p>
-              <div class="prod-specs">
-                <div class="prod-spec"><span class="pspec-l">Purity</span><span class="pspec-v">99% Min</span></div>
-                <div class="prod-spec"><span class="pspec-l">Origin</span><span class="pspec-v">Wollega, Oromia</span></div>
-                <div class="prod-spec"><span class="pspec-l">Moisture</span><span class="pspec-v">6% Max</span></div>
-                <div class="prod-spec"><span class="pspec-l">Packing</span><span class="pspec-v">50kg Jute Bags</span></div>
+              <div class="prod-cat-tag">Specialty Arabica</div>
+              <h3 class="prod-main-title">Yirgacheffe Coffee</h3>
+              <p class="prod-short-desc">Washed Grade 1 specialty coffee known for exquisite jasmine floral notes, brilliant citrus acidity, and cupping scores above 87+.</p>
+              <div class="prod-mini-specs">
+                <span class="pm-spec"><strong>Grade:</strong> Grade 1 Washed</span>
+                <span class="pm-spec"><strong>Moisture:</strong> 11.5% Max</span>
+                <span class="pm-spec"><strong>Cupping:</strong> 87+ Pts</span>
               </div>
-              <button class="prod-cta open-quote-drawer" data-product="wollega-sesame">
-                Request Quote <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
+              <div class="prod-action-row">
+                <button class="prod-cta open-quote-drawer" data-product="yirgacheffe-coffee">
+                  <span>Request Quote</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
             </div>
 
+            <!-- 03: Red Kidney Beans -->
             <div class="prod-panel" data-panel="2">
-              <div class="prod-cat">Specialty Coffee</div>
-              <h3 class="prod-title">Yirgacheffe Grade 1<br>Specialty Coffee</h3>
-              <p class="prod-desc">Washed Arabica specialty coffee featuring distinct delicate floral notes of jasmine, vibrant citrus acidity, and silky body. Cupping scores consistently above 87 points. A benchmark of Ethiopian origin.</p>
-              <div class="prod-specs">
-                <div class="prod-spec"><span class="pspec-l">Grade</span><span class="pspec-v">Grade 1 Specialty</span></div>
-                <div class="prod-spec"><span class="pspec-l">Origin</span><span class="pspec-v">Gedeo Zone, South</span></div>
-                <div class="prod-spec"><span class="pspec-l">Moisture</span><span class="pspec-v">11.5% Max</span></div>
-                <div class="prod-spec"><span class="pspec-l">Score</span><span class="pspec-v">87+ Cupping</span></div>
+              <div class="prod-cat-tag">Export Pulses</div>
+              <h3 class="prod-main-title">Red Kidney Beans</h3>
+              <p class="prod-short-desc">Glossy dark and light speckled kidney beans machine-cleaned to 98.5% purity, sourced from verified growers across the Great Rift Valley.</p>
+              <div class="prod-mini-specs">
+                <span class="pm-spec"><strong>Purity:</strong> 98.5% Min</span>
+                <span class="pm-spec"><strong>Moisture:</strong> 12% Max</span>
+                <span class="pm-spec"><strong>Packing:</strong> 50kg PP</span>
               </div>
-              <button class="prod-cta open-quote-drawer" data-product="yirgacheffe-coffee">
-                Request Quote <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
+              <div class="prod-action-row">
+                <button class="prod-cta open-quote-drawer" data-product="red-kidney-beans">
+                  <span>Request Quote</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
             </div>
 
+            <!-- 04: Korarima Cardamom -->
             <div class="prod-panel" data-panel="3">
-              <div class="prod-cat">Specialty Coffee</div>
-              <h3 class="prod-title">Sidama Natural<br>Arabica Coffee</h3>
-              <p class="prod-desc">Sun-dried natural processed coffee offering rich bergamot citrus, ripe berry sweetness, and full velvety body. A staple of specialty roasters worldwide for its complex, layered Ethiopian flavors.</p>
-              <div class="prod-specs">
-                <div class="prod-spec"><span class="pspec-l">Grade</span><span class="pspec-v">Grade 2 Export</span></div>
-                <div class="prod-spec"><span class="pspec-l">Origin</span><span class="pspec-v">Sidama Region</span></div>
-                <div class="prod-spec"><span class="pspec-l">Moisture</span><span class="pspec-v">11% Max</span></div>
-                <div class="prod-spec"><span class="pspec-l">Packing</span><span class="pspec-v">60kg Jute + Ecotact</span></div>
+              <div class="prod-cat-tag">Botanical Spices</div>
+              <h3 class="prod-main-title">Korarima Cardamom</h3>
+              <p class="prod-short-desc">Indigenous Ethiopian black cardamom from Kaffa rainforests, carrying intensely fragrant camphor and herbal notes for gourmet spices.</p>
+              <div class="prod-mini-specs">
+                <span class="pm-spec"><strong>Purity:</strong> 98% Min</span>
+                <span class="pm-spec"><strong>Moisture:</strong> 10% Max</span>
+                <span class="pm-spec"><strong>Origin:</strong> Kaffa Highlands</span>
               </div>
-              <button class="prod-cta open-quote-drawer" data-product="sidama-coffee">
-                Request Quote <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
+              <div class="prod-action-row">
+                <button class="prod-cta open-quote-drawer" data-product="cardamom">
+                  <span>Request Quote</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
             </div>
 
-            <div class="prod-panel" data-panel="4">
-              <div class="prod-cat">Pulses &amp; Beans</div>
-              <h3 class="prod-title">Red Kidney Beans<br>(Dark / Light)</h3>
-              <p class="prod-desc">Machine-cleaned, glossy red kidney beans packed with dietary fiber and vegetable protein. Sourced directly from verified growers in Ethiopia's Rift Valley for consistent size, color, and quality.</p>
-              <div class="prod-specs">
-                <div class="prod-spec"><span class="pspec-l">Purity</span><span class="pspec-v">98% Min</span></div>
-                <div class="prod-spec"><span class="pspec-l">Origin</span><span class="pspec-v">Rift Valley, Ethiopia</span></div>
-                <div class="prod-spec"><span class="pspec-l">Moisture</span><span class="pspec-v">12% Max</span></div>
-                <div class="prod-spec"><span class="pspec-l">Packing</span><span class="pspec-v">50kg PP Bags</span></div>
-              </div>
-              <button class="prod-cta open-quote-drawer" data-product="red-kidney-beans">
-                Request Quote <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-            </div>
+          </div><!-- /prod-bottom-area -->
 
-            <div class="prod-panel" data-panel="5">
-              <div class="prod-cat">Spices &amp; Botanical</div>
-              <h3 class="prod-title">Ethiopian Black<br>Cardamom (Korarima)</h3>
-              <p class="prod-desc">Indigenous wild-harvested Ethiopian spice known as false cardamom, delivering intensely aromatic camphoraceous and eucalyptus notes. Prized for essential oils and gourmet spice blends globally.</p>
-              <div class="prod-specs">
-                <div class="prod-spec"><span class="pspec-l">Purity</span><span class="pspec-v">98% Min</span></div>
-                <div class="prod-spec"><span class="pspec-l">Origin</span><span class="pspec-v">Kaffa Highlands</span></div>
-                <div class="prod-spec"><span class="pspec-l">Moisture</span><span class="pspec-v">10% Max</span></div>
-                <div class="prod-spec"><span class="pspec-l">Packing</span><span class="pspec-v">25kg Bags</span></div>
-              </div>
-              <button class="prod-cta open-quote-drawer" data-product="cardamom">
-                Request Quote <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-            </div>
-
-          </div><!-- /prod-content-area -->
         </div><!-- /prod-left -->
 
-        <!-- Right: large image that transitions with each product -->
+        <!-- ==================== RIGHT COLUMN (Large Image Showcase) ==================== -->
         <div class="prod-right">
           <div class="prod-img-stage" id="prod-img-stage">
 
             <div class="prod-img-wrap active" data-img="0">
-              <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=1400&q=85"
-                   alt="Humera White Sesame Seeds — golden seeds" class="prod-img" loading="eager">
+              <div class="prod-img-inner">
+                <img src="images/product_sesame.jpg"
+                     alt="Humera White Sesame Seeds" class="prod-img" loading="eager">
+              </div>
             </div>
+
             <div class="prod-img-wrap" data-img="1">
-              <img src="https://images.unsplash.com/photo-1509358271058-acd05cc93280?auto=format&fit=crop&w=1400&q=85"
-                   alt="Wollega Type Sesame Seeds" class="prod-img" loading="lazy">
+              <div class="prod-img-inner">
+                <img src="images/product_coffee.jpg"
+                     alt="Specialty Yirgacheffe Arabica Coffee" class="prod-img" loading="lazy">
+              </div>
             </div>
+
             <div class="prod-img-wrap" data-img="2">
-              <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1400&q=85"
-                   alt="Yirgacheffe Grade 1 Specialty Coffee" class="prod-img" loading="lazy">
+              <div class="prod-img-inner">
+                <img src="images/product_beans.jpg"
+                     alt="Red Kidney Beans and Pulses" class="prod-img" loading="lazy">
+              </div>
             </div>
+
             <div class="prod-img-wrap" data-img="3">
-              <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=1400&q=85"
-                   alt="Sidama Natural Arabica Coffee" class="prod-img" loading="lazy">
-            </div>
-            <div class="prod-img-wrap" data-img="4">
-              <img src="https://images.unsplash.com/photo-1551462147-37885acc36f1?auto=format&fit=crop&w=1400&q=85"
-                   alt="Red Kidney Beans" class="prod-img" loading="lazy">
-            </div>
-            <div class="prod-img-wrap" data-img="5">
-              <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1400&q=85"
-                   alt="Ethiopian Black Cardamom (Korarima)" class="prod-img" loading="lazy">
+              <div class="prod-img-inner">
+                <img src="images/product_spices.jpg"
+                     alt="Ethiopian Korarima Cardamom &amp; Spices" class="prod-img" loading="lazy">
+              </div>
             </div>
 
           </div><!-- /prod-img-stage -->
@@ -498,7 +525,7 @@
               <h4 class="industry-name">Vegetable Oil Refineries</h4>
               <div class="industry-arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
             </div>
-            <div class="industry-row-expand"><p>Bulk oilseed supply (Humera sesame, Niger seed, sunflower) engineered for high oil extraction yields.</p></div>
+            <div class="industry-row-expand"><p>Bulk oilseed supply (Humera sesame, Wollega type, soybeans) engineered for high oil extraction yields.</p></div>
             <div class="industry-divider" aria-hidden="true"></div>
           </div>
           <div class="industry-row">
@@ -507,7 +534,7 @@
               <h4 class="industry-name">Specialty Coffee Roasters</h4>
               <div class="industry-arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
             </div>
-            <div class="industry-row-expand"><p>Single-origin Grade 1 Arabica coffee beans (Yirgacheffe, Sidama, Guji) with cupping scores above 87+.</p></div>
+            <div class="industry-row-expand"><p>Single-origin Grade 1 Arabica coffee beans (Yirgacheffe, Sidama, Guji) with cupping scores consistently 87+.</p></div>
             <div class="industry-divider" aria-hidden="true"></div>
           </div>
           <div class="industry-row">
@@ -516,7 +543,7 @@
               <h4 class="industry-name">Wholesale Commodity Importers</h4>
               <div class="industry-arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
             </div>
-            <div class="industry-row-expand"><p>Full container load (FCL) shipments under contract terms with guaranteed specs and Djibouti port shipping.</p></div>
+            <div class="industry-row-expand"><p>Full container load (FCL) shipments under contract terms with guaranteed specs and direct Djibouti port export.</p></div>
             <div class="industry-divider" aria-hidden="true"></div>
           </div>
         </div>
@@ -538,7 +565,7 @@
         <div class="testimonials-carousel" id="testimonials-carousel">
           <div class="testimonial-slide active" data-index="0">
             <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-            <blockquote class="testimonial-text">Eternal IMPEX has been our exclusive supplier of Humera white sesame seeds for 6 years. Their sorting purity (99.5%+) and reliable shipments through Djibouti port are unmatched in North Africa.</blockquote>
+            <blockquote class="testimonial-text">Eternal IMPEX has been our primary supplier of Humera white sesame seeds for 6 years. Their sorting purity (99.5%+) and reliable shipments through Djibouti port are unmatched.</blockquote>
             <div class="testimonial-author">
               <div class="testimonial-avatar" aria-hidden="true">HG</div>
               <div class="testimonial-author-text">
@@ -549,7 +576,7 @@
           </div>
           <div class="testimonial-slide" data-index="1">
             <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-            <blockquote class="testimonial-text">The specialty Yirgacheffe Grade 1 coffee lots from Eternal IMPEX consistently score 88+ on cupping tests. Their GrainPro packaging ensures crop freshness across long sea transits.</blockquote>
+            <blockquote class="testimonial-text">The specialty Yirgacheffe Grade 1 coffee lots from Eternal IMPEX consistently score 88+ on cupping tests. Their GrainPro packaging ensures exceptional freshness.</blockquote>
             <div class="testimonial-author">
               <div class="testimonial-avatar" aria-hidden="true">KT</div>
               <div class="testimonial-author-text">
@@ -667,14 +694,14 @@
             <li><a href="#chapter-products" class="footer-link">Humera Sesame Seeds</a></li>
             <li><a href="#chapter-products" class="footer-link">Specialty Arabica Coffee</a></li>
             <li><a href="#chapter-products" class="footer-link">Red &amp; White Kidney Beans</a></li>
-            <li><a href="#chapter-products" class="footer-link">Korarima Cardamom &amp; Spices</a></li>
+            <li><a href="#chapter-products" class="footer-link">Korarima &amp; Spices</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4 class="footer-col-title">Trade Links</h4>
           <ul class="footer-links">
             <li><a href="#chapter-quality"  class="footer-link">Certifications &amp; SGS</a></li>
-            <li><a href="#chapter-farm"     class="footer-link">Company Overview</a></li>
+            <li><a href="#chapter-farm"     class="footer-link">About Eternal IMPEX</a></li>
             <li><a href="#chapter-quality"  class="footer-link">Industries Served</a></li>
           </ul>
         </div>
@@ -722,7 +749,11 @@
             <option value="yirgacheffe-coffee">Yirgacheffe Grade 1 Specialty Coffee</option>
             <option value="sidama-coffee">Sidama Natural Coffee</option>
             <option value="red-kidney-beans">Red Kidney Beans</option>
+            <option value="white-pea-beans">White Pea Beans (Haricot)</option>
             <option value="cardamom">Korarima Cardamom &amp; Spices</option>
+            <option value="black-cumin">Black Cumin Seed (Nigella)</option>
+            <option value="ginger-turmeric">Organic Ginger &amp; Turmeric</option>
+            <option value="soybeans">High-Protein Non-GMO Soybeans</option>
           </select>
         </div>
         <div class="form-row">
