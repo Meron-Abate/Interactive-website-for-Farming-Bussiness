@@ -124,13 +124,17 @@ function dismissPreloader() {
 
 function resizeHeroCanvas() {
   if (!heroCanvas || !heroCtx) return;
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const dpr = Math.min(window.devicePixelRatio || 1, 3); // Support up to Retina 3x for maximum clarity
   const w = window.innerWidth, h = window.innerHeight;
   heroCanvas.width  = w * dpr;
   heroCanvas.height = h * dpr;
   heroCanvas.style.width  = `${w}px`;
   heroCanvas.style.height = `${h}px`;
   heroCtx.scale(dpr, dpr);
+  
+  heroCtx.imageSmoothingEnabled = true;
+  heroCtx.imageSmoothingQuality = 'high';
+  
   renderFrame(Math.round(frameState.current));
 }
 
@@ -153,7 +157,10 @@ function renderFrame(index) {
   let dw, dh, ox, oy;
   if (cr > ir) { dw = cw; dh = cw / ir; ox = 0; oy = (ch - dh) / 2; }
   else         { dh = ch; dw = ch * ir; ox = (cw - dw) / 2; oy = 0; }
+  
   heroCtx.clearRect(0, 0, cw, ch);
+  heroCtx.imageSmoothingEnabled = true;
+  heroCtx.imageSmoothingQuality = 'high';
   heroCtx.drawImage(img, ox, oy, dw, dh);
 }
 
@@ -200,14 +207,28 @@ function updateStoryStages(progress) {
 
     let opacity = 1, ty = 0;
 
-    if (progress < stage.start + FADE_WIN) {
-      const t = (progress - stage.start) / FADE_WIN;
-      opacity = t;
-      ty = 28 * (1 - t);
-    } else if (progress > stage.end - FADE_WIN && stage.end < 1.0) {
-      const t = (stage.end - progress) / FADE_WIN;
-      opacity = t;
-      ty = -20 * (1 - t);
+    // Special Stage 1 handling: starts fully visible on landing (progress = 0)
+    if (stage.start === 0.00) {
+      if (progress < 0.12) {
+        opacity = 1.0;
+        ty = 0;
+      } else {
+        // Fade out smoothly between 0.12 and 0.20
+        const t = (0.20 - progress) / (0.20 - 0.12);
+        opacity = Math.max(0, Math.min(1, t));
+        ty = -20 * (1.0 - opacity);
+      }
+    } else {
+      // Standard stages fade in / fade out
+      if (progress < stage.start + FADE_WIN) {
+        const t = (progress - stage.start) / FADE_WIN;
+        opacity = t;
+        ty = 28 * (1 - t);
+      } else if (progress > stage.end - FADE_WIN && stage.end < 1.0) {
+        const t = (stage.end - progress) / FADE_WIN;
+        opacity = t;
+        ty = -20 * (1 - t);
+      }
     }
 
     stage.el.style.opacity       = opacity.toFixed(3);
@@ -310,14 +331,14 @@ function initHeroScrollytelling() {
     lockScroll();
   }
 
-  // Wheel listener: controls hero progress when at top of page (slow, deliberate)
+  // Wheel listener: controls hero progress when at top of page (optimized response speed)
   window.addEventListener('wheel', (e) => {
     const atTop = window.scrollY <= 4;
 
     if (!heroCompleted) {
       // Locked state: wheel increments/decrements hero story
       e.preventDefault();
-      const step = Math.min(0.012, Math.max(0.0015, Math.abs(e.deltaY) * 0.00008));
+      const step = Math.min(0.025, Math.max(0.003, Math.abs(e.deltaY) * 0.00018));
       
       if (e.deltaY > 0) {
         heroProgressTarget = Math.min(1.0, heroProgressTarget + step);
@@ -332,7 +353,7 @@ function initHeroScrollytelling() {
       e.preventDefault();
       heroCompleted = false;
       lockScroll();
-      const step = Math.min(0.012, Math.max(0.0015, Math.abs(e.deltaY) * 0.00008));
+      const step = Math.min(0.025, Math.max(0.003, Math.abs(e.deltaY) * 0.00018));
       heroProgressTarget = Math.max(0.0, 1.0 - step);
     }
   }, { passive: false });
@@ -350,7 +371,7 @@ function initHeroScrollytelling() {
 
     if (!heroCompleted) {
       e.preventDefault();
-      const step = Math.min(0.016, Math.abs(deltaY) * 0.00022);
+      const step = Math.min(0.035, Math.abs(deltaY) * 0.00065);
       if (deltaY > 0) {
         heroProgressTarget = Math.min(1.0, heroProgressTarget + step);
       } else {
@@ -364,7 +385,7 @@ function initHeroScrollytelling() {
       e.preventDefault();
       heroCompleted = false;
       lockScroll();
-      const step = Math.min(0.016, Math.abs(deltaY) * 0.00022);
+      const step = Math.min(0.035, Math.abs(deltaY) * 0.00065);
       heroProgressTarget = Math.max(0.0, 1.0 - step);
       touchStartY = currentY;
     }
@@ -377,10 +398,10 @@ function initHeroScrollytelling() {
     if (!heroCompleted) {
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
-        heroProgressTarget = Math.min(1.0, heroProgressTarget + 0.022);
+        heroProgressTarget = Math.min(1.0, heroProgressTarget + 0.045);
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
         e.preventDefault();
-        heroProgressTarget = Math.max(0.0, heroProgressTarget - 0.022);
+        heroProgressTarget = Math.max(0.0, heroProgressTarget - 0.045);
       }
       return;
     }
@@ -389,7 +410,7 @@ function initHeroScrollytelling() {
       e.preventDefault();
       heroCompleted = false;
       lockScroll();
-      heroProgressTarget = Math.max(0.0, 1.0 - 0.022);
+      heroProgressTarget = Math.max(0.0, 1.0 - 0.045);
     }
   });
 }
@@ -582,10 +603,10 @@ function initChapterFarm() {
 
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: farmSticky,
+      trigger:       '#chapter-farm',
       start:         'top top',
       end:           `+=${window.innerHeight * 2.4}`,
-      pin:           true,
+      pin:           farmSticky,
       pinSpacing:    true,
       scrub:         1.2,
       anticipatePin: 1,
@@ -699,10 +720,10 @@ function initChapterProducts() {
   let lastActiveIdx = 0;
 
   const prodST = ScrollTrigger.create({
-    trigger:       sticky,
+    trigger:       wrapper,
     start:         'top top',
     end:           `+=${pinDist}`,
-    pin:           true,
+    pin:           sticky,
     pinSpacing:    true,
     scrub:         1.2,
     anticipatePin: 1,
@@ -1043,6 +1064,40 @@ function initQuoteDrawer() {
     'soybeans':         'soybeans',
   };
 
+  // Dynamic Toggling for Request Types
+  const requestTypeSelect = document.getElementById('request-type');
+  const quoteFields       = form?.querySelectorAll('.quote-only-fields');
+  const sampleFields      = form?.querySelectorAll('.sample-only-fields');
+
+  if (requestTypeSelect) {
+    requestTypeSelect.addEventListener('change', () => {
+      const isSample = requestTypeSelect.value === 'sample';
+      
+      // Toggle field visibility
+      quoteFields?.forEach(el => el.style.display = isSample ? 'none' : 'block');
+      sampleFields?.forEach(el => el.style.display = isSample ? 'block' : 'none');
+
+      // Update required attributes dynamically based on selection
+      const qtyInput  = document.getElementById('quantity-input');
+      const incoterm  = document.getElementById('incoterm-select');
+      const destInput = document.getElementById('destination-input');
+      
+      const sampleQty = document.getElementById('sample-quantity');
+      const country   = document.getElementById('sample-country');
+      const address   = document.getElementById('sample-address');
+      const agree     = document.getElementById('sample-agree');
+
+      if (qtyInput)  qtyInput.required = !isSample;
+      if (incoterm)  incoterm.required = !isSample;
+      if (destInput) destInput.required = !isSample;
+
+      if (sampleQty) sampleQty.required = isSample;
+      if (country)   country.required = isSample;
+      if (address)   address.required = isSample;
+      if (agree)     agree.required = isSample;
+    });
+  }
+
   function openDrawer(productKey) {
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
@@ -1081,11 +1136,14 @@ function initQuoteDrawer() {
     const span = submitBtn?.querySelector('span');
     if (!span) return;
     const orig = span.textContent;
-    span.textContent = 'Inquiry Submitted ✓';
+    span.textContent = 'Request Submitted ✓';
     if (submitBtn) { submitBtn.style.background = '#2a6e3a'; submitBtn.style.pointerEvents = 'none'; }
     setTimeout(() => {
       closeDrawer();
       form.reset();
+      // Reset visible fields state
+      quoteFields?.forEach(el => el.style.display = 'block');
+      sampleFields?.forEach(el => el.style.display = 'none');
       span.textContent = orig;
       if (submitBtn) { submitBtn.style.background = ''; submitBtn.style.pointerEvents = ''; }
     }, 2200);
