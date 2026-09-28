@@ -3,7 +3,7 @@
    Background: #16391F (preserved) | Deep: #0D2414 | Gold: #D9A441 | Cream: #F4EDD8
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,800;0,900;1,300;1,400;1,700&display=swap');
 
 /* --------------------------------------------------------------------------
    DESIGN TOKENS
@@ -28,8 +28,8 @@
   --text-lo:      rgba(244, 237, 216, 0.30);
   --text-muted:   #3e6648;
 
-  --font-serif:   'Cormorant Garamond', Georgia, serif;
-  --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif:   'Lato', Georgia, serif;
+  --font-sans:    'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
 
   --ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
   --ease-inout:   cubic-bezier(0.76, 0, 0.24, 1);
@@ -434,16 +434,29 @@ a      { text-decoration: none; color: inherit; }
   pointer-events: none;
   will-change: transform, opacity;
 
-  /* Watermark background only for the text and buttons */
-  background: rgba(7, 21, 10, 0.65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(244, 237, 216, 0.09);
-  border-radius: 18px;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+  /* Strong scrim + blur so text stays legible over any frame of footage */
+  background: radial-gradient(ellipse at center, rgba(3, 10, 5, 0.82) 0%, rgba(3, 10, 5, 0.6) 55%, rgba(3, 10, 5, 0.15) 85%, transparent 100%);
+  backdrop-filter: blur(10px) saturate(1.05);
+  -webkit-backdrop-filter: blur(10px) saturate(1.05);
+  border: none;
+  box-shadow: none;
+  transition: opacity 0.6s ease;
+}
+
+/* Gilded hairline that ignites across the top edge while a stage is in view */
+.story-stage::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 8%; right: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(217, 164, 65, 0.65), transparent);
+  opacity: 0;
+  transition: opacity 0.6s ease;
 }
 
 .story-stage.active { pointer-events: auto; }
+
+.story-stage.active::before { opacity: 1; }
 
 .stage-center {
   left: 50%; top: 50%;
@@ -479,8 +492,9 @@ a      { text-decoration: none; color: inherit; }
 .story-headline {
   font-family: var(--font-serif);
   font-size: clamp(10px, 5.5vw, 46px);
-  font-weight: 400; line-height: 1.1; letter-spacing: -0.01em;
+  font-weight: 400; line-height: 1.15; letter-spacing: -0.01em;
   color: var(--cream);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 8px 30px rgba(0, 0, 0, 0.7);
 }
 
 .story-headline--final {
@@ -490,8 +504,9 @@ a      { text-decoration: none; color: inherit; }
 
 .story-sub {
   font-family: var(--font-sans);
-  font-size: clamp(13px, 1.5vw, 15px); line-height: 1.65;
-  color: rgba(244, 237, 216, 0.9); max-width: 460px;
+  font-size: clamp(13px, 1.5vw, 15px); line-height: 1.7; letter-spacing: 0.01em;
+  color: rgba(244, 237, 216, 0.95); max-width: 460px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .stage-center .story-sub { text-align: center; }
@@ -1279,32 +1294,147 @@ a      { text-decoration: none; color: inherit; }
    -------------------------------------------------------------------------- */
 .site-footer { background: var(--bg-deep); border-top: 1px solid rgba(244, 237, 216, 0.06); }
 
-.footer-inner { max-width: 1200px; margin: 0 auto; padding: 80px var(--pad-x) 40px; }
+.footer-inner { max-width: 1320px; margin: 0 auto; padding: 48px var(--pad-x) 32px; }
 
-.footer-top {
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
-  padding-bottom: 60px;
-  border-bottom: 1px solid rgba(244, 237, 216, 0.06);
+.footer-divider { height: 1px; background: rgba(244, 237, 216, 0.08); width: 100%; }
+
+/* Edge-docked social tab — a slim vertical tab flush against the screen
+   edge that slides out a stacked icon panel on hover/focus.
+   Anchored to the bottom corner to stay clear of the chapter-nav indicator,
+   which occupies the same right edge at vertical-center. */
+.social-dock {
+  position: fixed;
+  bottom: 32px; right: 2px;
+  z-index: 200;
+  display: flex; align-items: stretch;
 }
 
-@media (max-width: 900px) { .footer-top { grid-template-columns: 1fr 1fr; } .footer-brand-col { grid-column: 1 / -1; } }
-@media (max-width: 520px)  { .footer-top { grid-template-columns: 1fr; } }
+.social-dock-tab {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 22px 9px;
+  background: var(--bg-deep);
+  border: 1px solid rgba(244, 237, 216, 0.16);
+  border-right: none;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
 
-.footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-.footer-brand-icon { width: 20px; height: 20px; color: var(--gold); }
-.footer-brand-name { font-family: var(--font-sans); font-size: 12px; font-weight: 800; letter-spacing: 0.2em; color: var(--cream); }
-.footer-brand-desc { font-family: var(--font-sans); font-size: 13px; line-height: 1.65; color: var(--text-mid); max-width: 300px; }
+.social-dock:hover .social-dock-tab, .social-dock:focus-within .social-dock-tab {
+  border-color: var(--gold-dark);
+}
 
-.footer-col-title { font-family: var(--font-sans); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-lo); margin-bottom: 16px; }
-.footer-links { display: flex; flex-direction: column; gap: 10px; }
-.footer-link { font-family: var(--font-sans); font-size: 13px; color: var(--text-mid); transition: color 0.3s ease; }
-.footer-link:hover { color: var(--gold); }
-.footer-link--text { cursor: default; }
-.footer-link--text:hover { color: var(--text-mid); }
+.social-dock-arrow {
+  display: flex; color: var(--gold-dark); flex-shrink: 0;
+  animation: dock-arrow-hint 1.8s ease-in-out infinite;
+}
+.social-dock-arrow svg { width: 12px; height: 12px; }
 
-.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; gap: 20px; flex-wrap: wrap; }
-.footer-copy { font-family: var(--font-sans); font-size: 12px; color: var(--text-lo); }
-.footer-legal { display: flex; gap: 20px; }
+@keyframes dock-arrow-hint {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50%      { transform: translateX(-3px); opacity: 1; }
+}
+
+.social-dock-label {
+  font-family: var(--font-sans); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-hi);
+}
+
+.social-dock-icons {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 16px 10px;
+  background: var(--bg-deep);
+  border: 1px solid rgba(244, 237, 216, 0.16);
+  border-right: none;
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+
+.social-dock:hover .social-dock-icons, .social-dock:focus-within .social-dock-icons {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dock-icon {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(244, 237, 216, 0.14);
+  background: rgba(244, 237, 216, 0.04);
+  color: var(--text-hi);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Staggered cascade as the panel slides open */
+.social-dock-icons .dock-icon:nth-child(1) { transition-delay: 0.05s; }
+.social-dock-icons .dock-icon:nth-child(2) { transition-delay: 0.1s; }
+.social-dock-icons .dock-icon:nth-child(3) { transition-delay: 0.15s; }
+.social-dock-icons .dock-icon:nth-child(4) { transition-delay: 0.2s; }
+.social-dock-icons .dock-icon:nth-child(5) { transition-delay: 0.25s; }
+
+.social-dock:hover .dock-icon, .social-dock:focus-within .dock-icon {
+  opacity: 1; transform: translateY(0);
+}
+
+.dock-icon svg { width: 15px; height: 15px; }
+.dock-icon-text { font-family: var(--font-serif); font-weight: 700; font-style: italic; font-size: 13px; }
+
+.dock-icon:hover, .dock-icon:focus-visible {
+  transform: scale(1.2);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.dock-instagram:hover { background: #e1306c; border-color: #e1306c; }
+.dock-linkedin:hover  { background: #0a66c2; border-color: #0a66c2; }
+.dock-tiktok:hover    { background: #0d0d0d; border-color: #25f4ee; }
+.dock-behance:hover   { background: #1769ff; border-color: #1769ff; }
+.dock-youtube:hover   { background: #ff0000; border-color: #ff0000; }
+
+@media (max-width: 560px) {
+  .social-dock { display: none; } /* avoid obstructing content on small phones */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-dock-icons, .dock-icon { transition-duration: 0.01ms; }
+}
+
+/* Center — interactive particle logo */
+.footer-logo-stage { position: relative; display: flex; align-items: center; justify-content: center; padding: 44px 0; }
+.footer-logo-canvas { width: min(720px, 88vw); aspect-ratio: 257.72 / 59.05; display: block; }
+
+/* Bottom row — locations, copyright, legal links */
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; padding: 28px 0 12px;
+}
+
+.footer-locations {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid);
+}
+.footer-locations .loc-sep { opacity: 0.4; }
+
+.footer-copy-block { text-align: center; display: flex; flex-direction: column; gap: 4px; }
+.footer-copy { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--text-hi); }
+.footer-copy-sub { font-family: var(--font-sans); font-size: 11px; color: var(--text-lo); }
+
+.footer-link { color: var(--text-mid); transition: color 0.3s ease; }
+.footer-link:hover { color: var(--gold-dark); }
+.footer-link--text { cursor: default; color: var(--text-lo); }
+.footer-link--text:hover { color: var(--text-lo); }
+
+@media (max-width: 720px) {
+  .footer-bottom { flex-direction: column; text-align: center; }
+}
 
 /* --------------------------------------------------------------------------
    QUOTE DRAWER

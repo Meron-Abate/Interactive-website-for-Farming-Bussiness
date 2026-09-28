@@ -18,7 +18,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,800;0,900;1,300;1,400;1,700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
@@ -31,6 +31,35 @@
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 </head>
 <body>
+
+  <!-- =====================================================================
+       SOCIAL DOCK — slim edge tab that slides out an icon panel on hover
+       ===================================================================== -->
+  <div class="social-dock" aria-label="Follow Eternal IMPEX">
+    <div class="social-dock-icons">
+      <a href="#" class="dock-icon dock-instagram" target="_blank" rel="noopener noreferrer" aria-label="Eternal IMPEX on Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="#" class="dock-icon dock-linkedin" target="_blank" rel="noopener noreferrer" aria-label="Eternal IMPEX on LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.12 1 2.49 1s2.49 1.12 2.49 2.5zM.24 8.25h4.5V23h-4.5V8.25zM8.25 8.25h4.31v2.01h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V23h-4.5v-6.75c0-1.61-.03-3.68-2.24-3.68-2.25 0-2.59 1.75-2.59 3.56V23h-4.5V8.25z"/></svg>
+      </a>
+      <a href="#" class="dock-icon dock-tiktok" target="_blank" rel="noopener noreferrer" aria-label="Eternal IMPEX on TikTok">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-.94-.83-1.6-1.98-1.72-3.29h-3.02v13.84a3.13 3.13 0 1 1-2.19-2.98V10.3a6.15 6.15 0 1 0 5.21 6.08V9.3a8.16 8.16 0 0 0 4.72 1.5V7.76a4.85 4.85 0 0 1-3-1.94z"/></svg>
+      </a>
+      <a href="#" class="dock-icon dock-behance" target="_blank" rel="noopener noreferrer" aria-label="Eternal IMPEX on Behance">
+        <span class="dock-icon-text">Be</span>
+      </a>
+      <a href="#" class="dock-icon dock-youtube" target="_blank" rel="noopener noreferrer" aria-label="Eternal IMPEX on YouTube">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.23-1.64-.94-2.36c-.9-.94-1.9-.94-2.36-1C17.18 2.5 12 2.5 12 2.5h-.01s-5.18 0-8.19.34c-.46.06-1.46.06-2.36 1C.73 4.56.5 6.2.5 6.2S.25 8.13.25 10.06v1.87C.25 13.87.5 15.8.5 15.8s.23 1.64.94 2.36c.9.94 2.08.91 2.6 1.01 1.89.18 8-.24 8-.24s5.19-.01 8.2-.35c.46-.06 1.46-.06 2.36-1 .71-.72.94-2.36.94-2.36s.25-1.93.25-3.86v-1.87c0-1.93-.25-3.86-.25-3.86zM9.55 14.62V7.9l6.27 3.37-6.27 3.35z"/></svg>
+      </a>
+    </div>
+    <div class="social-dock-tab">
+      <span class="social-dock-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M15 6l-6 6 6 6"/></svg>
+      </span>
+      <span class="social-dock-label">Stay Connected</span>
+    </div>
+  </div>
 
   <!-- =====================================================================
        CUSTOM CURSOR
@@ -111,7 +140,7 @@
     <nav class="site-nav" aria-label="Main navigation">
       <ul class="site-nav-list">
         <li><a href="#chapter-farm" class="site-nav-link" data-section="farm">About Us</a></li>
-        <li><a href="#chapter-products" class="site-nav-link" data-section="products">Products</a></li>
+        <li><a href="products.html" class="site-nav-link" data-section="products">Products</a></li>
         <li><a href="#chapter-quality" class="site-nav-link" data-section="quality">Quality</a></li>
         <li><a href="#chapter-contact" class="site-nav-link" data-section="contact">Contact</a></li>
       </ul>
@@ -132,7 +161,7 @@
     <nav class="mobile-nav" aria-label="Mobile navigation">
       <ul>
         <li><a href="#chapter-farm"     class="mobile-nav-link">About Us</a></li>
-        <li><a href="#chapter-products" class="mobile-nav-link">Products</a></li>
+        <li><a href="products.html" class="mobile-nav-link">Products</a></li>
         <li><a href="#chapter-quality"  class="mobile-nav-link">Quality</a></li>
         <li><a href="#chapter-contact"  class="mobile-nav-link">Contact</a></li>
         <li><button class="mobile-quote-btn open-quote-drawer">Request a Quote</button></li>
@@ -164,7 +193,6 @@
 
         <!-- Stage 1 — opening (0 → 15%) -->
         <div id="stage-1" class="story-stage stage-center" role="region" aria-label="Stage 1">
-          <div class="stage-eyebrow">01 / ORIGIN &amp; PLANTING</div>
           <h1 class="story-headline">Every Global Harvest<br>Begins With a Single<br>Planting Season</h1>
           <p class="story-sub">
             From Ethiopia's fertile highlands, thousands of carefully selected agricultural products begin their journey toward international markets.
@@ -173,7 +201,6 @@
 
         <!-- Stage 2 — sourcing (17 → 32%) -->
         <div id="stage-2" class="story-stage stage-left" role="region" aria-label="Stage 2">
-          <div class="stage-eyebrow">02 / QUALITY SOURCING</div>
           <h2 class="story-headline">Precision-Engineered<br>Sourcing</h2>
           <p class="story-sub">
             Every shipment begins with verified highland farms, rigorous moisture calibration, and zero-defect harvesting standards from the ground up.
@@ -182,7 +209,6 @@
 
         <!-- Stage 3 — cooperatives (34 → 50%) -->
         <div id="stage-3" class="story-stage stage-right" role="region" aria-label="Stage 3">
-          <div class="stage-eyebrow">03 / FARMER COOPERATIVES &amp; OPTICAL SORTING</div>
           <h2 class="story-headline">Micro-Structure<br>&amp; Purity</h2>
           <p class="story-sub">
             Direct partnerships with 25,000+ certified smallholder farmers. Buhler Sortex optical sorting ensures 99.5%+ seed purity on every shipment.
@@ -191,7 +217,6 @@
 
         <!-- Stage 4 — export (52 → 67%) -->
         <div id="stage-4" class="story-stage stage-left" role="region" aria-label="Stage 4">
-          <div class="stage-eyebrow">04 / GLOBAL EXPORT LOGISTICS</div>
           <h2 class="story-headline">Scaling Agriculture<br>Worldwide</h2>
           <p class="story-sub">
             From sesame and pulses to specialty Arabica coffee — FOB/CIF shipping with Djibouti port logistics and SGS inspection.
@@ -200,7 +225,6 @@
 
         <!-- Stage 5 — final statement (70 → 100%)  LONG READING HOLD -->
         <div id="stage-5" class="story-stage stage-center" role="region" aria-label="Stage 5">
-          <div class="stage-eyebrow">ETERNAL IMPEX ETHIOPIA</div>
           <h2 class="story-headline story-headline--final">Bridging Ethiopia's<br>Agricultural Wealth<br>With Global<br>Supply Chains</h2>
           <p class="story-sub">
             High-purity agricultural commodities harvested at their peak, processed to international standards, delivered across 45+ countries.
@@ -210,7 +234,7 @@
               <span>Request a Quote</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
-            <a href="#chapter-products" class="btn-ghost"><span>Explore Products</span></a>
+            <a href="products.html" class="btn-ghost"><span>Explore Products</span></a>
           </div>
         </div>
 
@@ -234,11 +258,6 @@
     <div class="chapter-farm-sticky" id="chapter-farm-sticky">
       <div class="about-container">
         
-        <div class="chapter-label-wrap">
-          <span class="chapter-num" aria-hidden="true">01</span>
-          <span class="chapter-label">ABOUT US</span>
-        </div>
-
         <h2 class="about-headline" id="about-headline">
           Rooted in Ethiopia's Fertile Soil, Connected to Global Supply Chains
         </h2>
@@ -450,8 +469,6 @@
     <div class="quality-inner">
 
       <div class="quality-header-block">
-        <span class="chapter-num" aria-hidden="true">03</span>
-        <span class="chapter-label">OUR STRENGTHS</span>
         <h2 class="quality-headline">Strategic Sourcing<br>&amp; Operational Edge</h2>
         <p class="quality-subtext">How we stay ahead in B2B agricultural export through direct farm relationships, modern intelligence systems, and dedicated trade leadership.</p>
       </div>
@@ -518,7 +535,6 @@
     <div class="quality-inner">
       <div class="industries-block" aria-label="Industries we serve">
         <div class="industries-header">
-          <span class="chapter-label">B2B SECTORS</span>
           <h3 class="industries-title">Industries We<br>Empower Globally</h3>
         </div>
         <div class="industries-list">
@@ -570,7 +586,6 @@
   <!--<section class="chapter chapter-testimonials" id="chapter-testimonials" aria-label="Partner Testimonials">
     <div class="testimonials-inner">
       <div class="testimonials-header">
-        <span class="chapter-label">GLOBAL TRUST</span>
         <p class="testimonials-headline">Long-term partnerships built on consistency,<br>speed, and uncompromising crop quality.</p>
       </div>
       <div class="testimonials-stage" role="region" aria-live="polite">
@@ -631,10 +646,6 @@
        ===================================================================== -->
   <section id="chapter-future" class="chapter chapter-future" aria-label="The Future">
     <div class="future-inner">
-      <div class="future-chapter-label">
-        <span class="chapter-num" aria-hidden="true">04</span>
-        <span class="chapter-label">THE FUTURE</span>
-      </div>
       <div class="future-statement">
         <h2 class="future-headline">
           <span class="future-word">Bridging</span>
@@ -658,7 +669,6 @@
   <section id="chapter-contact" class="chapter chapter-contact" aria-label="Contact">
     <div class="contact-inner">
       <div class="contact-left">
-        <span class="chapter-label">BEGIN YOUR SOURCING JOURNEY</span>
         <h2 class="contact-headline">Ready to Source<br>Premium Ethiopian<br>Agricultural Products?</h2>
         <p class="contact-sub">Contact our trade export specialists today to receive official specifications, sample packages, and FOB/CIF proforma quotations.</p>
         <button class="btn-primary open-quote-drawer" id="contact-quote-btn">
@@ -692,48 +702,40 @@
        ===================================================================== -->
   <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-brand-col">
-          <div class="footer-brand">
-            <div class="footer-brand-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-            <span class="footer-brand-name">ETERNAL IMPEX</span>
-          </div>
-          <p class="footer-brand-desc">Ethiopia's premier B2B agricultural sourcing and export company, connecting fertile highland harvests with global supply chains since 2006.</p>
-        </div>
-        <div class="footer-col">
-          <h4 class="footer-col-title">Commodities</h4>
-          <ul class="footer-links">
-            <li><a href="#chapter-products" class="footer-link">Humera Sesame Seeds</a></li>
-            <li><a href="#chapter-products" class="footer-link">Specialty Arabica Coffee</a></li>
-            <li><a href="#chapter-products" class="footer-link">Red &amp; White Kidney Beans</a></li>
-            <li><a href="#chapter-products" class="footer-link">Korarima &amp; Spices</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4 class="footer-col-title">Trade Links</h4>
-          <ul class="footer-links">
-            <li><a href="#chapter-quality"  class="footer-link">Certifications &amp; SGS</a></li>
-            <li><a href="#chapter-farm"     class="footer-link">About Eternal IMPEX</a></li>
-            <li><a href="#chapter-quality"  class="footer-link">Industries Served</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4 class="footer-col-title">Contact</h4>
-          <ul class="footer-links">
-            <li><a href="mailto:export@eternal-impex.com" class="footer-link">export@eternal-impex.com</a></li>
-            <li><span class="footer-link footer-link--text">Bole Sub-City, Addis Ababa</span></li>
-            <li><span class="footer-link footer-link--text">Djibouti Port Export Hub</span></li>
-          </ul>
-        </div>
+
+      <div class="footer-logo-stage">
+        <canvas id="footer-logo-canvas" class="footer-logo-canvas" role="img" aria-label="Eternal IMPEX"></canvas>
+        <!-- Hidden source geometry used to sample particle points — avoids canvas/image tainting -->
+        <svg id="footer-logo-source" viewBox="0 0 257.72 59.05" style="position:absolute; width:1px; height:1px; overflow:hidden; opacity:0;" aria-hidden="true">
+          <g>
+            <path class="cls-2" d="M25.34,31.98L2.88,54.44c-1.06,1.06-2.88.31-2.88-1.19V5.94c0-1.51,1.82-2.26,2.88-1.19l22.46,22.46c1.32,1.32,1.32,3.46,0,4.78Z"/>
+            <path class="cls-2" d="M59.05,3.38v34.46c0,2.17-1.39,4.11-3.45,4.8l-15.02,5.07c-1.77.6-3.73.17-5.1-1.11l-6.11-5.75c-.69-.65-.71-1.75-.04-2.42l1.23-1.23c4.19-4.19,4.19-11,0-15.19h-.01S11.47,2.88,11.47,2.88c-1.06-1.06-.31-2.88,1.19-2.88h43.02c1.87,0,3.38,1.51,3.38,3.38Z"/>
+            <path class="cls-2" d="M42.95,54.7l13.87-4.69c1.1-.37,2.23.44,2.23,1.6v4.05c0,1.87-1.51,3.38-3.38,3.38H12.79c-1.51,0-2.26-1.82-1.19-2.88l10.14-10.14c.65-.65,1.69-.66,2.35-.04l6.35,5.98h0c3.35,3.15,8.16,4.2,12.52,2.73Z"/>
+          </g>
+          <g>
+            <path class="cls-1" d="M177.88,18.45v7.38h-5.54c-3.05,0-5.53,2.47-5.54,5.52v16.62h-7.38v-29.52h3.69c1.26,0,2.36.63,3.02,1.58,1.84-1.01,3.95-1.58,6.2-1.58h5.54Z"/>
+            <path class="cls-1" d="M254.03,11.07h-3.69v33.22c0,2.04,1.65,3.69,3.69,3.69h3.69V14.76c0-2.04-1.65-3.69-3.69-3.69Z"/>
+            <path class="cls-1" d="M115.35,39.81c-.49.48-1.17.79-1.91.79-1.49,0-2.7-1.21-2.7-2.7v-12.06h7.38v-7.38h-7.38v-3.69c0-2.04-1.65-3.69-3.69-3.69h-3.69v26.82c0,5.57,4.51,10.09,10.08,10.09,2.79,0,5.3-1.13,7.13-2.96h0s3.31-3.31,3.31-3.31l-5.21-5.21-3.31,3.31Z"/>
+            <path class="cls-1" d="M73.82,11.07v36.91h25.83v-3.69c0-2.04-1.65-3.69-3.69-3.69h-14.76v-7.38h11.07v-7.38h-11.07v-7.38h14.76c2.04,0,3.69-1.65,3.69-3.69v-3.69h-25.83Z"/>
+            <path class="cls-1" d="M211.1,31.37v16.61h-7.38v-16.61c0-3.06-2.48-5.54-5.54-5.54h-3.69c-3.04,0-5.5,2.45-5.53,5.48v16.66h-7.38v-29.52h3.69c2.04,0,3.69,1.65,3.69,3.69v.19c2.26-2.31,5.39-3.78,8.86-3.87.12-.01.24-.01.37-.01,7.13,0,12.92,5.78,12.92,12.92Z"/>
+            <path class="cls-1" d="M242.96,18.45h-3.69v1.32c-2.47-1.57-5.4-2.49-8.55-2.49-8.8,0-15.93,7.13-15.93,15.93s7.13,15.93,15.93,15.93c3.15,0,6.08-.92,8.55-2.49v1.32h7.38v-25.84c0-2.04-1.65-3.69-3.69-3.69ZM239.26,33.26c-.02,4.7-3.84,8.5-8.55,8.5s-8.54-3.82-8.54-8.54,3.82-8.54,8.54-8.54,8.53,3.8,8.55,8.5v.09Z"/>
+            <path class="cls-1" d="M145.83,39.26c-3.56,3.56-9.49,3.32-12.73-.72-2.39-2.97-2.49-7.31-.22-10.38,2.37-3.2,6.37-4.21,9.75-3.01l-8.06,8.06,2.61,2.61h0c1.44,1.44,3.78,1.44,5.22,0l10.96-10.96c-.63-1.04-1.41-2.02-2.31-2.92-.9-.9-1.88-1.67-2.92-2.3-6.13-3.78-14.27-3.02-19.6,2.28-5.95,5.92-6.22,15.71-.6,21.94,6.16,6.83,16.7,7.03,23.12.62,3.11-3.11,4.67-7.19,4.67-11.27h-7.38c0,2.19-.84,4.38-2.5,6.05Z"/>
+          </g>
+        </svg>
       </div>
+
+      <div class="footer-divider" aria-hidden="true"></div>
+
       <div class="footer-bottom">
-        <div class="footer-copy">© 2026 Eternal IMPEX PLC. All Rights Reserved.</div>
-        <div class="footer-legal">
-          <a href="#" class="footer-link">Privacy Policy</a>
-          <a href="#" class="footer-link">Terms of Trade</a>
-          <a href="#" class="footer-link">Export Compliance</a>
+        <div class="footer-locations">
+          <span>Addis Ababa</span><span class="loc-sep">/</span><span>Djibouti</span>
+        </div>
+        <div class="footer-copy-block">
+          <div class="footer-copy">© 2026 Eternal IMPEX. All Rights Reserved.</div>
+          <div class="footer-copy-sub">Eternal IMPEX is a part of Eternal Media and Communication PLC.</div>
         </div>
       </div>
+
     </div>
   </footer>
 
@@ -875,5 +877,6 @@
   </div>
 
   <script src="app.js" defer></script>
+  <script src="footer-logo-particles.js" defer></script>
 </body>
 </html>

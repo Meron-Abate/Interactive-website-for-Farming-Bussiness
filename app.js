@@ -371,13 +371,13 @@ function initHeroScrollytelling() {
       // Locked on hero: wheel controls scrollytelling slider
       e.preventDefault();
       
-      // Responsive, consistent, smooth step - never feels stuck!
-      const step = Math.min(0.06, Math.max(0.018, Math.abs(e.deltaY) * 0.00045));
+      // Step scales with actual wheel input — gentle scrolls move gently, fast flicks move fast
+      const step = Math.min(0.16, Math.max(0.008, Math.abs(e.deltaY) * 0.00075));
       
       if (e.deltaY > 0) {
         heroProgressTarget = Math.min(1.0, heroProgressTarget + step);
         // When it finishes to the end of the slider, unlock so subsequent scroll goes to next section
-        if (heroProgressTarget >= 1.0 && heroProgress >= 0.94) {
+        if (heroProgressTarget >= 1.0) {
           heroCompleted = true;
           unlockScroll();
         }
@@ -393,7 +393,7 @@ function initHeroScrollytelling() {
       e.preventDefault();
       heroCompleted = false;
       lockScroll();
-      const step = Math.min(0.06, Math.max(0.018, Math.abs(e.deltaY) * 0.00045));
+      const step = Math.min(0.16, Math.max(0.008, Math.abs(e.deltaY) * 0.00075));
       heroProgressTarget = Math.max(0.0, 1.0 - step);
     }
   }, { passive: false });
@@ -410,11 +410,11 @@ function initHeroScrollytelling() {
     const deltaY = touchStartY - currentY; // positive is swipe up (scroll down)
 
     if (!heroCompleted) {
-      const step = Math.min(0.09, Math.max(0.025, Math.abs(deltaY) * 0.001));
+      const step = Math.min(0.22, Math.max(0.01, Math.abs(deltaY) * 0.0016));
       if (deltaY > 0) {
         e.preventDefault();
         heroProgressTarget = Math.min(1.0, heroProgressTarget + step);
-        if (heroProgressTarget >= 1.0 && heroProgress >= 0.94) {
+        if (heroProgressTarget >= 1.0) {
           heroCompleted = true;
           unlockScroll();
         }
@@ -430,7 +430,7 @@ function initHeroScrollytelling() {
       e.preventDefault();
       heroCompleted = false;
       lockScroll();
-      const step = Math.min(0.09, Math.max(0.025, Math.abs(deltaY) * 0.001));
+      const step = Math.min(0.22, Math.max(0.01, Math.abs(deltaY) * 0.0016));
       heroProgressTarget = Math.max(0.0, 1.0 - step);
       touchStartY = currentY;
     }
@@ -443,14 +443,14 @@ function initHeroScrollytelling() {
     if (!heroCompleted) {
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
-        heroProgressTarget = Math.min(1.0, heroProgressTarget + 0.06);
-        if (heroProgressTarget >= 1.0 && heroProgress >= 0.94) {
+        heroProgressTarget = Math.min(1.0, heroProgressTarget + 0.058);
+        if (heroProgressTarget >= 1.0) {
           heroCompleted = true;
           unlockScroll();
         }
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
         e.preventDefault();
-        heroProgressTarget = Math.max(0.0, heroProgressTarget - 0.06);
+        heroProgressTarget = Math.max(0.0, heroProgressTarget - 0.058);
       }
       return;
     }
@@ -459,7 +459,7 @@ function initHeroScrollytelling() {
       e.preventDefault();
       heroCompleted = false;
       lockScroll();
-      heroProgressTarget = Math.max(0.0, 1.0 - 0.06);
+      heroProgressTarget = Math.max(0.0, 1.0 - 0.058);
     }
   });
 }
@@ -476,7 +476,7 @@ function animateLoop() {
   // Lerp Hero story progress smoothly and responsively
   const heroDiff = heroProgressTarget - heroProgress;
   if (Math.abs(heroDiff) > 0.0002) {
-    heroProgress += heroDiff * 0.18;
+    heroProgress += heroDiff * 0.3;
     
     // Canvas frames complete smoothly across the slider, reaching final frame by progress ~0.88
     const frameProgress = Math.min(1.0, heroProgress / 0.88);
@@ -494,7 +494,7 @@ function animateLoop() {
   }
 
   // When scrollytelling reaches completion, ensure scroll is unlocked so next scroll proceeds to next section
-  if (heroProgressTarget >= 1.0 && heroProgress >= 0.96 && !heroCompleted) {
+  if (heroProgressTarget >= 1.0 && !heroCompleted) {
     heroCompleted = true;
     unlockScroll();
   }
@@ -737,7 +737,7 @@ function initChapterProducts() {
   }
 
   // Desktop: GSAP Pinned Scrollytelling
-  const pinDist = PROD_COUNT * window.innerHeight * 2.2;
+  const pinDist = PROD_COUNT * window.innerHeight * 0.85;
 
   // Sequenced Timing Thresholds within each product slice (0.0 -> 1.0)
   // 1. 0.00 -> 0.22 : Image transitions in first
@@ -776,8 +776,13 @@ function initChapterProducts() {
     end:           `+=${pinDist}`,
     pin:           sticky,
     pinSpacing:    true,
-    scrub:         1.2,
+    scrub:         0.4,
     anticipatePin: 1,
+    snap: {
+      snapTo: 1 / (PROD_COUNT - 1),
+      duration: { min: 0.15, max: 0.4 },
+      ease: 'power1.inOut',
+    },
     onUpdate:      self => {
       // Map global progress 0.0 -> 1.0 to product range 0.0 -> 3.0
       const globalProgress = self.progress * (PROD_COUNT - 1);
