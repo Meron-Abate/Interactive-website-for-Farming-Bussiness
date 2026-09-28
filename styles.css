@@ -47,6 +47,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
   background: var(--bg-primary);
   color: var(--text-hi);
   scroll-behavior: auto;
@@ -1397,6 +1398,9 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   }
 
   html { scroll-behavior: auto; }
+
+  .hero-scroll-wrapper { height: auto !important; }
+  .hero-sticky-scene { position: relative !important; height: auto !important; }
 
   .story-stage { position: static !important; opacity: 1 !important; transform: none !important; pointer-events: auto !important; width: 100% !important; text-align: left !important; align-items: flex-start !important; }
 

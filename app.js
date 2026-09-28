@@ -26,7 +26,7 @@ let heroProgress       = 0;
 let heroProgressTarget = 0;
 let heroCompleted      = false;
 
-const TOTAL_FRAMES = 300;
+const TOTAL_FRAMES = 71;
 const FRAME_DIR    = './frames/';
 const images       = [];
 const frameState   = { loaded: 0, current: 0, target: 0, ready: false };
@@ -186,21 +186,45 @@ const stageRanges = [
   { el: document.getElementById('stage-5'), start: 0.80, end: 1.00, isCenter: true  },
 ];
 
-const FADE_WIN = 0.030;
+const FADE_WIN = 0.035;
 
 function updateStoryStages(progress) {
-  stageRanges.forEach(stage => {
+  stageRanges.forEach((stage, idx) => {
     if (!stage.el) return;
+    const isFinalStage = (idx === stageRanges.length - 1);
 
-    if (progress < stage.start || progress > stage.end) {
-      const isAfter = progress > stage.end;
+    // If before start:
+    if (progress < stage.start) {
       stage.el.style.opacity       = '0';
       stage.el.style.pointerEvents = 'none';
       stage.el.classList.remove('active');
+      const ty = '30px';
       if (stage.isCenter) {
-        stage.el.style.transform = `translateX(-50%) translateY(calc(-50% + ${isAfter ? '-24px' : '30px'}))`;
+        stage.el.style.transform = `translateX(-50%) translateY(calc(-50% + ${ty}))`;
       } else {
-        stage.el.style.transform = `translateY(calc(-50% + ${isAfter ? '-24px' : '30px'}))`;
+        stage.el.style.transform = `translateY(calc(-50% + ${ty}))`;
+      }
+      return;
+    }
+
+    // If after end:
+    if (progress > stage.end) {
+      if (isFinalStage) {
+        // Final card STAYS locked in its final resting position!
+        stage.el.style.opacity       = '1';
+        stage.el.style.pointerEvents = 'auto';
+        stage.el.classList.add('active');
+        stage.el.style.transform     = 'translateX(-50%) translateY(-50%)';
+      } else {
+        stage.el.style.opacity       = '0';
+        stage.el.style.pointerEvents = 'none';
+        stage.el.classList.remove('active');
+        const ty = '-24px';
+        if (stage.isCenter) {
+          stage.el.style.transform = `translateX(-50%) translateY(calc(-50% + ${ty}))`;
+        } else {
+          stage.el.style.transform = `translateY(calc(-50% + ${ty}))`;
+        }
       }
       return;
     }
@@ -218,13 +242,23 @@ function updateStoryStages(progress) {
         opacity = Math.max(0, Math.min(1, t));
         ty = -20 * (1.0 - opacity);
       }
-    } else {
-      // Standard stages fade in / fade out
+    } else if (isFinalStage) {
+      // Final stage fades in smoothly, then locks into resting position
       if (progress < stage.start + FADE_WIN) {
         const t = (progress - stage.start) / FADE_WIN;
         opacity = t;
         ty = 28 * (1 - t);
-      } else if (progress > stage.end - FADE_WIN && stage.end < 1.0) {
+      } else {
+        opacity = 1.0;
+        ty = 0;
+      }
+    } else {
+      // Standard stages (2, 3, 4) fade in and fade out
+      if (progress < stage.start + FADE_WIN) {
+        const t = (progress - stage.start) / FADE_WIN;
+        opacity = t;
+        ty = 28 * (1 - t);
+      } else if (progress > stage.end - FADE_WIN) {
         const t = (stage.end - progress) / FADE_WIN;
         opacity = t;
         ty = -20 * (1 - t);
@@ -250,7 +284,7 @@ function updateStoryStages(progress) {
   const canvasEl = document.getElementById('hero-canvas');
 
   if (progress > 0.80) {
-    const t = (progress - 0.80) / 0.20; // 0.0 -> 1.0
+    const t = Math.min(1.0, (progress - 0.80) / 0.15); // completes cleanly by 0.95
     if (vignette) vignette.style.opacity = (1.0 - t * 0.92).toFixed(3);
     if (atmo)     atmo.style.opacity     = (1.0 - t * 0.95).toFixed(3);
     if (canvasEl) {
@@ -264,18 +298,16 @@ function updateStoryStages(progress) {
 }
 
 /* ==========================================================================
-   5. CONTROLLED HERO SCROLL CONTROLLER
+   5. CONTROLLED HERO SCROLLYTELLING ENGINE
    ========================================================================== */
 function lockScroll() {
   if (lenis) lenis.stop();
   document.body.style.overflow = 'hidden';
-  document.documentElement.style.overflow = 'hidden';
 }
 
 function unlockScroll() {
   if (lenis) lenis.start();
   document.body.style.overflow = '';
-  document.documentElement.style.overflow = '';
 }
 
 function resetHeroScrollytelling() {
@@ -326,34 +358,42 @@ function initHeroScrollytelling() {
     return;
   }
 
-  // Initial scroll lock on load
+  // Initial scroll lock on load if at top of page
   if (window.scrollY <= 4) {
     lockScroll();
   }
 
-  // Wheel listener: controls hero progress when at top of page (optimized response speed)
+  // Wheel listener: controls hero scrollytelling slider, then releases to next section
   window.addEventListener('wheel', (e) => {
     const atTop = window.scrollY <= 4;
 
     if (!heroCompleted) {
-      // Locked state: wheel increments/decrements hero story
+      // Locked on hero: wheel controls scrollytelling slider
       e.preventDefault();
-      const step = Math.min(0.025, Math.max(0.003, Math.abs(e.deltaY) * 0.00018));
+      
+      // Responsive, consistent, smooth step - never feels stuck!
+      const step = Math.min(0.06, Math.max(0.018, Math.abs(e.deltaY) * 0.00045));
       
       if (e.deltaY > 0) {
         heroProgressTarget = Math.min(1.0, heroProgressTarget + step);
+        // When it finishes to the end of the slider, unlock so subsequent scroll goes to next section
+        if (heroProgressTarget >= 1.0 && heroProgress >= 0.94) {
+          heroCompleted = true;
+          unlockScroll();
+        }
       } else {
         heroProgressTarget = Math.max(0.0, heroProgressTarget - step);
       }
       return;
     }
 
-    // Completed state: if at top and scrolling UP, re-lock and reverse
+    // When completed:
+    // If at top of page and user scrolls UP, re-lock on hero and reverse
     if (atTop && e.deltaY < 0) {
       e.preventDefault();
       heroCompleted = false;
       lockScroll();
-      const step = Math.min(0.025, Math.max(0.003, Math.abs(e.deltaY) * 0.00018));
+      const step = Math.min(0.06, Math.max(0.018, Math.abs(e.deltaY) * 0.00045));
       heroProgressTarget = Math.max(0.0, 1.0 - step);
     }
   }, { passive: false });
@@ -370,11 +410,16 @@ function initHeroScrollytelling() {
     const deltaY = touchStartY - currentY; // positive is swipe up (scroll down)
 
     if (!heroCompleted) {
-      e.preventDefault();
-      const step = Math.min(0.035, Math.abs(deltaY) * 0.00065);
+      const step = Math.min(0.09, Math.max(0.025, Math.abs(deltaY) * 0.001));
       if (deltaY > 0) {
+        e.preventDefault();
         heroProgressTarget = Math.min(1.0, heroProgressTarget + step);
-      } else {
+        if (heroProgressTarget >= 1.0 && heroProgress >= 0.94) {
+          heroCompleted = true;
+          unlockScroll();
+        }
+      } else if (deltaY < 0) {
+        e.preventDefault();
         heroProgressTarget = Math.max(0.0, heroProgressTarget - step);
       }
       touchStartY = currentY;
@@ -385,7 +430,7 @@ function initHeroScrollytelling() {
       e.preventDefault();
       heroCompleted = false;
       lockScroll();
-      const step = Math.min(0.035, Math.abs(deltaY) * 0.00065);
+      const step = Math.min(0.09, Math.max(0.025, Math.abs(deltaY) * 0.001));
       heroProgressTarget = Math.max(0.0, 1.0 - step);
       touchStartY = currentY;
     }
@@ -398,10 +443,14 @@ function initHeroScrollytelling() {
     if (!heroCompleted) {
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
-        heroProgressTarget = Math.min(1.0, heroProgressTarget + 0.045);
+        heroProgressTarget = Math.min(1.0, heroProgressTarget + 0.06);
+        if (heroProgressTarget >= 1.0 && heroProgress >= 0.94) {
+          heroCompleted = true;
+          unlockScroll();
+        }
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
         e.preventDefault();
-        heroProgressTarget = Math.max(0.0, heroProgressTarget - 0.045);
+        heroProgressTarget = Math.max(0.0, heroProgressTarget - 0.06);
       }
       return;
     }
@@ -410,7 +459,7 @@ function initHeroScrollytelling() {
       e.preventDefault();
       heroCompleted = false;
       lockScroll();
-      heroProgressTarget = Math.max(0.0, 1.0 - 0.045);
+      heroProgressTarget = Math.max(0.0, 1.0 - 0.06);
     }
   });
 }
@@ -424,28 +473,28 @@ function handlePageScroll(scrollY) {
    6. ANIMATION LERP LOOP
    ========================================================================== */
 function animateLoop() {
-  // Lerp Hero story progress smoothly
+  // Lerp Hero story progress smoothly and responsively
   const heroDiff = heroProgressTarget - heroProgress;
-  if (Math.abs(heroDiff) > 0.0005) {
-    heroProgress += heroDiff * 0.075;
+  if (Math.abs(heroDiff) > 0.0002) {
+    heroProgress += heroDiff * 0.18;
     
-    // Sync canvas frames directly with hero progress
-    frameState.target = heroProgress * (TOTAL_FRAMES - 1);
+    // Canvas frames complete smoothly across the slider, reaching final frame by progress ~0.88
+    const frameProgress = Math.min(1.0, heroProgress / 0.88);
+    frameState.target = frameProgress * (TOTAL_FRAMES - 1);
     
-    if (scrollThumb) scrollThumb.style.width = `${heroProgress * 100}%`;
+    if (scrollThumb) scrollThumb.style.width = `${Math.min(100, Math.max(0, heroProgress * 100))}%`;
     updateStoryStages(heroProgress);
   }
 
-  // Lerp Canvas frame rendering
+  // Lerp Canvas frame rendering with crisp catch-up
   const frameDiff = frameState.target - frameState.current;
   if (Math.abs(frameDiff) > 0.01) {
-    frameState.current += frameDiff * 0.10;
+    frameState.current += frameDiff * 0.25;
     renderFrame(Math.max(0, Math.min(TOTAL_FRAMES - 1, Math.round(frameState.current))));
   }
 
-  // Check if hero has reached final frame and unlock scrolling
-  const isFinished = (heroProgressTarget >= 1.0 && heroProgress >= 0.99 && Math.round(frameState.current) >= TOTAL_FRAMES - 1);
-  if (isFinished && !heroCompleted) {
+  // When scrollytelling reaches completion, ensure scroll is unlocked so next scroll proceeds to next section
+  if (heroProgressTarget >= 1.0 && heroProgress >= 0.96 && !heroCompleted) {
     heroCompleted = true;
     unlockScroll();
   }
@@ -547,11 +596,13 @@ function initChapterNav() {
     btn.addEventListener('click', () => {
       const target = btn.dataset.target;
       if (!target) return;
-      
-      // Auto complete hero if jumping forward
+
       heroCompleted = true;
       heroProgressTarget = 1;
       heroProgress = 1;
+      updateStoryStages(1);
+      renderFrame(TOTAL_FRAMES - 1);
+      unlockScroll();
 
       const el = document.querySelector(target);
       if (!el) return;
@@ -993,7 +1044,7 @@ function initNavHighlight() {
     navLinks.forEach(link => link.classList.toggle('active', link.dataset.section === key));
   }
 
-  // If user clicks a nav link from hero, complete hero and scroll smoothly
+  // Smooth scroll for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
@@ -1005,7 +1056,6 @@ function initNavHighlight() {
       heroCompleted = true;
       heroProgressTarget = 1;
       heroProgress = 1;
-      
       updateStoryStages(1);
       renderFrame(TOTAL_FRAMES - 1);
       unlockScroll();
