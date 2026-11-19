@@ -1052,9 +1052,9 @@ a      { text-decoration: none; color: inherit; }
 /* Redesigned Strengths Layout & Founder Card */
 .strengths-layout {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 60px;
-  align-items: start;
+  grid-template-columns: 1fr 460px;
+  gap: 56px;
+  align-items: center;
 }
 
 @media (max-width: 900px) {
@@ -1066,18 +1066,19 @@ a      { text-decoration: none; color: inherit; }
 
 .founder-card {
   background: linear-gradient(180deg, rgba(244, 237, 216, 0.02) 0%, rgba(244, 237, 216, 0.05) 100%);
-  border: 1px solid rgba(244, 237, 216, 0.08);
-  padding: 32px;
+  border: 1px solid rgba(244, 237, 216, 0.12);
+  padding: 36px 44px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 22px;
 }
 
 .founder-img-wrapper {
-  width: 140px;
-  height: 140px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   overflow: hidden;
   position: relative;
@@ -1112,19 +1113,19 @@ a      { text-decoration: none; color: inherit; }
 .founder-meta {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 
 .founder-name {
   font-family: var(--font-serif);
-  font-size: 20px;
+  font-size: 32px;
   font-weight: 500;
   color: var(--cream);
 }
 
 .founder-title {
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--gold);
   letter-spacing: 0.12em;
@@ -1133,13 +1134,13 @@ a      { text-decoration: none; color: inherit; }
 
 .founder-quote {
   font-family: var(--font-serif);
-  font-size: 13.5px;
+  font-size: 21px;
   font-style: italic;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--text-mid);
-  margin-top: 14px;
-  border-top: 1px solid rgba(244, 237, 216, 0.08);
-  padding-top: 14px;
+  margin-top: 22px;
+  border-top: 1px solid rgba(244, 237, 216, 0.12);
+  padding-top: 26px;
 }
 
 /* Industries */
